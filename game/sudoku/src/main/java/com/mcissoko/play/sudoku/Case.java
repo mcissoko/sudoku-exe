@@ -49,9 +49,26 @@ public class Case {
 	public void fillContent(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
+			System.out.println(group.getIndex()+  ";" + position.getIndex());
 			throw new IllegalStateException("Echec tentative");
 			
 		}
+		setContent(candidate);
+		if(!this.group.isContentUnique(this)){
+			removeCandidate(candidate);
+			this.resetContent();
+			fillContent();
+			
+			return;
+		}else{
+			this.setContent(candidate);
+			pop(candidate);
+			candidates.clear();			
+		}
+		
+	}
+	public void fillContent(Integer candidate){
+		candidates.remove(candidate);
 		setContent(candidate);
 		if(!this.group.isContentUnique(this)){
 			removeCandidate(candidate);

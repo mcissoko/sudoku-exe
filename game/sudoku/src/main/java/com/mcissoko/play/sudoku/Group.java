@@ -359,18 +359,50 @@ public class Group {
 			startPosition = startPosition + 3;
 			endPosition = endPosition + 3;
 		}
-		
-		/*/
-		for(Case caze : cases.values()){
-			if(i == 3){
-				result = result + "\n";
-				i = 0;
-			}
-			result = result +  caze.toString();
-			i++;
-		}
-		//*/
+	
 		return sb.toString();
+	}
+	
+	public void calculateOccurenceInGroupColumn(Case box, Map<Integer, Integer> occurrenceInColumn) {
+		int column = box.getPosition().getCoordinate().getColumn();
+		for(Case caze : cases.values()){
+			if(caze.getPosition().getCoordinate().getColumn() == column){
+				for(Integer candidate: caze.getCandidates()){
+					if(occurrenceInColumn.containsKey(candidate)){
+						occurrenceInColumn.put(candidate, (occurrenceInColumn.get(candidate) + 1));
+					}
+				}
+				
+			}
+		}
+	}
+	
+	public void calculateOccurenceInGroupLine(Case box, Map<Integer, Integer> occurrenceInLine) {
+		int line = box.getPosition().getCoordinate().getLine();
+		for(Case caze : cases.values()){
+			if(caze.getPosition().getCoordinate().getLine() == line){
+				for(Integer candidate: caze.getCandidates()){
+					if(occurrenceInLine.containsKey(candidate)){
+						occurrenceInLine.put(candidate, (occurrenceInLine.get(candidate) + 1));
+					}
+				}
+				
+			}
+		}
+	}
+	
+
+	public void calculateOccurence(Case box, Map<Integer, Integer> occurrenceInLine, Map<Integer, Integer> occurrenceInColumn) {
+		
+		calculateOccurenceInGroupLine(box, occurrenceInLine);
+		calculateOccurenceInGroupColumn(box, occurrenceInColumn);
+		
+		grid.getGroup(groupLine[0]).calculateOccurenceInGroupLine(box, occurrenceInLine);
+		grid.getGroup(groupLine[1]).calculateOccurenceInGroupLine(box, occurrenceInLine);
+		
+		grid.getGroup(groupColumn[0]).calculateOccurenceInGroupColumn(box, occurrenceInColumn);
+		grid.getGroup(groupColumn[1]).calculateOccurenceInGroupColumn(box, occurrenceInColumn);
+		
 	}
 }
 
