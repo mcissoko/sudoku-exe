@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mcissoko.play.sudoku.api.PlaySequence;
 import com.mcissoko.play.sudoku.player.Grille;
 
 public class Sudoku {
@@ -20,58 +21,62 @@ public class Sudoku {
 		try {
 			Map<Integer, Object> result = new HashMap<>();
 			Case candidate = grid.getGroup(GroupIndexEnum.INDEX_1).getCases().get(PositionIndexEnum.INDEX_1);
-			boolean fixed = true;
-			result.put(0, fixed);
+			boolean gridFilled;
 			result.put(1, candidate );
-			while(true){
-				fixed = true;
-				result.put(0, fixed);
-				
-				for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
-					Group group = grid.getGroup(groupIndexEnum);
-					result = group.checkCandidate(result);
-					fixed = fixed & (boolean) result.get(0);
-				}
-				if(fixed){
-					if( grid.isSudoku()){
-						System.out.println(grid);
-						System.out.println("resolu");
-						return;
-					}else{
-						System.out.println("Echec");
-						grid = new Grille();
-						process();
+			gridFilled = false;
+			boolean seach = true;
+			
+			while(!gridFilled){
+				gridFilled = true;
+				result.put(0, gridFilled);
+				if(seach){
+					for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
+						Group group = grid.getGroup(groupIndexEnum);
+						result = group.checkCandidate(result);
+						gridFilled = gridFilled & (boolean) result.get(0);
 					}
-					
+					if(gridFilled || candidate == null){
+						if(gridFilled && grid.isSudoku()){
+							System.out.println(grid);
+							System.out.println("resolu");
+							return;
+						}else{
+							System.out.println("Echec");
+							grid = new Grille();
+							process();
+							return;
+						}
+						
+					}else{
+						candidate = (Case) result.get(1);
+						if(candidate.getState() == StateCaseEnum.FILLED){
+							continue;
+						}						
+					}
 				}
-				candidate = (Case) result.get(1);
-				if(candidate.getState() == StateCaseEnum.FILLED){
+				
+				PlaySequence playSequence = candidate.fillContent();
+				boolean restaure = false;
+				if(playSequence == null ){
+					restaure = true;
+				}
+				
+				if(!restaure && !candidate.getGroup().removeCandidate(candidate, playSequence)){
+					restaure = true;
+				}
+				if(restaure){
+					System.out.println(candidate);
+					System.err.println(grid);//-------------------------------------------
+					candidate = grid.restaure();
+					seach = candidate == null ? true : false;
+					gridFilled = false;
 					continue;
 				}
-				/*
-				Map<Integer, Integer> occurrenceInLine = new HashMap<>();
-				Map<Integer, Integer> occurrenceInColumn = new HashMap<>();
-				for(Integer i: candidate.getCandidates()){
-					occurrenceInLine.put(i, 0);
-					occurrenceInColumn.put(i, 0);
-				}
-				candidate.getGroup().calculateOccurence(candidate, occurrenceInLine, occurrenceInColumn);
 				
-				Entry<Integer, Integer> candidateLine = min(occurrenceInLine);
-				Entry<Integer, Integer> candidateColumn = min(occurrenceInColumn);
-				Integer value;
-				if(candidateLine.getValue() <= candidateColumn.getValue()){
-					value = candidateLine.getValue();
-				}else{
-					value = candidateColumn.getValue();
-				}
-				candidate.fillContent(value);
+				grid.addPlaySequence(playSequence); 
 				
-				//*/
-				candidate.fillContent();
-				//System.out.println(grille);
-				
-				candidate.getGroup().removeCandidate(candidate);
+				seach = true;
+				gridFilled = false;
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

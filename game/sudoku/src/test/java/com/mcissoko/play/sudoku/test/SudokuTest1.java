@@ -1,6 +1,8 @@
 package com.mcissoko.play.sudoku.test;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 
@@ -12,9 +14,20 @@ import com.mcissoko.play.sudoku.player.Grille;
 public class SudokuTest1 {
 
 	public static void main(String[] args) {
-		test1();
+		test3();
 	}
 	
+	public static void test3(){
+		Deque<String> queue = new ArrayDeque<>();
+		queue.addFirst("Un");
+		queue.addFirst("deux");
+		queue.addFirst("trois");
+		queue.addFirst("quatre");
+		
+		System.out.println(queue.pop());
+		System.out.println(queue);
+		
+	}
 	public static void test2(){
 		List<Integer> numbers = new ArrayList<>();
 		for(int i = 1; i <= 9; i++){

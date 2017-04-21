@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.mcissoko.play.sudoku.api.PlaySequence;
+
 public class Case {
 
 	private Position position;
@@ -12,12 +14,15 @@ public class Case {
 	private Integer content;
 	private Group group;
 	
+	private List<Integer> triedCandidates;
+	
 	private final Random randomizer;
 	public Case(Position position, Group group) {
 		super();
 		this.position = position;
 		this.state = StateCaseEnum.EMPTY;
 		candidates = new ArrayList<>();
+		triedCandidates = new ArrayList<>();
 		for(int i = 0; i < 9; i++){
 			candidates.add(i + 1);
 		}
@@ -30,6 +35,10 @@ public class Case {
 		return candidates.size();
 	}
 	
+	public void setCandidates(List<Integer> candidates) {
+		this.candidates = new ArrayList<>(candidates);
+	}
+
 	private int pop(Integer candidate){
 		//Integer candidate = oneCandidate();
 		candidates.remove(candidate);
@@ -38,54 +47,62 @@ public class Case {
 	}
 	
 	private Integer oneCandidate(){
-		if(this.candidates.isEmpty()){
+		List<Integer> list = new ArrayList<>(candidates);
+		list.removeAll(triedCandidates);
+		if(list.isEmpty()){
 			return 0;
 		}
-		Integer candidate = candidates.get(randomizer.nextInt(candidates.size()));
+		Integer candidate = list.get(randomizer.nextInt(list.size()));
 		
 		return candidate;
 	}
 	
-	public void fillContent(){
+	public PlaySequence fillContent(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
-			System.out.println(group.getIndex()+  ";" + position.getIndex());
-			throw new IllegalStateException("Echec tentative");
-			
+			//System.out.println(group.getIndex()+  ";" + position.getIndex());
+			//System.out.println("Echec tentative");
+			return null;
 		}
 		setContent(candidate);
-		if(!this.group.isContentUnique(this)){
-			removeCandidate(candidate);
-			this.resetContent();
-			fillContent();
-			
-			return;
-		}else{
-			this.setContent(candidate);
-			pop(candidate);
-			candidates.clear();			
-		}
 		
-	}
-	public void fillContent(Integer candidate){
-		candidates.remove(candidate);
-		setContent(candidate);
-		if(!this.group.isContentUnique(this)){
-			removeCandidate(candidate);
-			this.resetContent();
-			fillContent();
-			
-			return;
-		}else{
-			this.setContent(candidate);
-			pop(candidate);
-			candidates.clear();			
+		if(!this.triedCandidates.contains(candidate)){
+			this.triedCandidates.add(candidate);
 		}
-		
+//		if(!this.group.isContentUnique(this)){
+//			//removeCandidate(candidate);
+//			this.resetContent();
+//			fillContent();
+//			
+//			return;
+//		}else{
+//			this.setContent(candidate);
+//			pop(candidate);
+//		}
+		PlaySequence playSequence = new PlaySequence(getGroup().getIndex(), getPosition().getIndex(), getContent(), getCandidates());
+		getCandidates().clear();	
+		return playSequence;
 	}
+//	public void fillContent(Integer candidate){
+//		candidates.remove(candidate);
+//		setContent(candidate);
+//		if(!this.group.isContentUnique(this)){
+//			removeCandidate(candidate);
+//			this.resetContent();
+//			fillContent();
+//			
+//			return;
+//		}else{
+//			this.setContent(candidate);
+//			pop(candidate);
+//			candidates.clear();			
+//		}
+//		
+//	}
 	
-	public void removeCandidate(Integer candidate){
+	public void removeCandidate(Integer candidate, PlaySequence playSequence){
 		candidates.remove(candidate);
+		playSequence.getSellectedBoxes().add(new PlaySequence(this.group.getIndex(), getPosition().getIndex()));
 	}
 	
 
@@ -117,6 +134,7 @@ public class Case {
 	public void setContent(Integer content) {
 		this.content = content;
 		this.state = StateCaseEnum.FILLED;
+		
 	}
 	public void resetContent() {
 		this.content =  0;
@@ -162,6 +180,13 @@ public class Case {
 		} else if (!position.equals(other.position))
 			return false;
 		return true;
+	}
+
+	public void restaureCandidate(Integer sellectedCandidate) {
+		if(candidates.contains(sellectedCandidate)){
+			return;
+		}
+		candidates.add(sellectedCandidate);
 	}
 
 	

@@ -1,17 +1,20 @@
 package com.mcissoko.play.sudoku.player;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.mcissoko.play.sudoku.Case;
+import com.mcissoko.play.sudoku.Group;
 import com.mcissoko.play.sudoku.GroupIndexEnum;
 import com.mcissoko.play.sudoku.PositionIndexEnum;
-import com.mcissoko.play.sudoku.Group;
+import com.mcissoko.play.sudoku.api.PlaySequence;
 
 public class Grille {
 
 	private Map<GroupIndexEnum, Group> groups;
-
+	private Deque<PlaySequence> playSequence;
 	
 	public Grille() {
 		initGroups();
@@ -19,9 +22,21 @@ public class Grille {
 	
 	private void initGroups(){
 		groups = new HashMap<>();
+		playSequence = new ArrayDeque<>();
 		for(GroupIndexEnum i: GroupIndexEnum.values()){
 			groups.put(i, new Group(i, this));
 		}
+	}
+	
+	public void addPlaySequence(PlaySequence playSequence){
+		this.playSequence.addFirst(playSequence);
+	}
+	
+	private PlaySequence getLastPlaySequence(){
+		if(playSequence.isEmpty()){
+			return null;
+		}
+		return this.playSequence.pop();
 	}
 	
 	public boolean isNumberInGrilleLine(Case caze) {
@@ -118,6 +133,30 @@ public class Grille {
 		}
 		
 		return sb.toString();
+	}
+
+	public Case restaure() {
+		PlaySequence last = getLastPlaySequence();
+		if(last == null){
+			
+			return null;
+		}
+		Group group = getGroup(last.getGroupIndex());
+		Case caze = group.getCases(last.getPositionIndex());
+		caze.resetContent();
+		caze.setCandidates(last.getCandidates());
+		for(PlaySequence ps: last.getSellectedBoxes()){
+			Group g = getGroup(ps.getGroupIndex());
+			g.getCases(ps.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
+		}
+		
+		if(caze.getCandidates().size() == 1){
+			System.err.println("Un seul candidat disponible: " + caze);
+			System.err.println(this);
+			return this.restaure();
+		}
+		
+		return caze;
 	}
 	
 	

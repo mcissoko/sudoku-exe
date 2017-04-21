@@ -3,6 +3,7 @@ package com.mcissoko.play.sudoku;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mcissoko.play.sudoku.api.PlaySequence;
 import com.mcissoko.play.sudoku.player.Grille;
 
 public class Group {
@@ -187,20 +188,24 @@ public class Group {
 		}
 		return false;
 	}
-	public void removeCandidateInGroupLine(Case filled) {
+	public boolean removeCandidateInGroupLine(Case filled, PlaySequence playSequence) {
 		int line = filled.getPosition().getCoordinate().getLine();
 		for(Case caze : cases.values()){
 			if(caze.getPosition().getCoordinate().getLine() == line){
-				if(caze.sizeOfCandidate() == 1){
-					caze.fillContent();
-					removeCandidate(caze);
-					continue;
+				if(caze.sizeOfCandidate() == 1 && filled.getContent().equals(caze.getCandidates().get(0))){
+//					PlaySequence ps =  caze.fillContent();
+//					removeCandidate(caze, ps);
+//					grid.addPlaySequence(ps);
+//					continue;
+					System.out.println("Echec tentative: aucun candidat (2)");
+					return false;
 				}
-				 caze.removeCandidate(filled.getContent());
+				 caze.removeCandidate(filled.getContent(), playSequence);
 				 //System.out.println(caze);
 				 //System.out.println(caze.getCandidates());
 			}
 		}
+		return true;
 	}
 	
 	public boolean isNumberInGroupColumn(Case caze) {
@@ -224,18 +229,23 @@ public class Group {
 		return false;
 	}
 	
-	public void removeCandidateInGroupColumn(Case filled) {
+	public boolean removeCandidateInGroupColumn(Case filled, PlaySequence playSequence) {
 		int column = filled.getPosition().getCoordinate().getColumn();
 		for(Case caze : cases.values()){
 			if(caze.getPosition().getCoordinate().getColumn() == column){
-				if(caze.sizeOfCandidate() == 1){
-					caze.fillContent();
-					removeCandidate(caze);
-					continue;
+				if(caze.sizeOfCandidate() == 1 && filled.getContent().equals(caze.getCandidates().get(0))){
+//					PlaySequence ps =  caze.fillContent();
+//					removeCandidate(caze, ps);
+//					grid.addPlaySequence(ps);
+//					continue;
+					System.out.println("Echec tentative: aucun candidat (3)");
+					return false;
 				}
-				caze.removeCandidate(filled.getContent());
+				caze.removeCandidate(filled.getContent(), playSequence);
 			}
 		}
+		
+		return true;
 	}
 		
 	/**
@@ -264,7 +274,7 @@ public class Group {
 	
 	
 	
-	public void removeCandidate(Case filled){
+	public boolean removeCandidate(Case filled, PlaySequence playSequence){
 		PositionIndexEnum index = filled.getPosition().getIndex();
 		Integer candidate = filled.getContent();
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
@@ -273,20 +283,25 @@ public class Group {
 			if (index == caze.getPosition().getIndex()) {
 				continue;
 			}
-			if(caze.sizeOfCandidate() == 1){
-				caze.fillContent();
-				removeCandidate(caze);
-				continue;
+			if(caze.sizeOfCandidate() == 1 && candidate.equals(caze.getCandidates().get(0))){
+//				PlaySequence ps =  caze.fillContent();
+//				removeCandidate(caze, ps);
+//				grid.addPlaySequence(ps);
+//				continue;
+				System.out.println("Echec tentative: aucun candidat ()");
+				return false;
 			}
-			caze.removeCandidate(candidate);
+			caze.removeCandidate(candidate, playSequence);
+			
 			//System.out.println(caze);
 			//System.out.println(caze.getCandidates());
 		}
-		grid.getGroup(groupLine[0]).removeCandidateInGroupLine(filled);
-		grid.getGroup(groupLine[1]).removeCandidateInGroupLine(filled);
+		return 
+		grid.getGroup(groupLine[0]).removeCandidateInGroupLine(filled, playSequence) &&
+		grid.getGroup(groupLine[1]).removeCandidateInGroupLine(filled, playSequence) &&
 		
-		grid.getGroup(groupColumn[0]).removeCandidateInGroupColumn(filled);
-		grid.getGroup(groupColumn[1]).removeCandidateInGroupColumn(filled);
+		grid.getGroup(groupColumn[0]).removeCandidateInGroupColumn(filled, playSequence) &&
+		grid.getGroup(groupColumn[1]).removeCandidateInGroupColumn(filled, playSequence);
 		
 		
 	}
@@ -319,10 +334,13 @@ public class Group {
 	public Map<PositionIndexEnum, Case> getCases() {
 		return cases;
 	}
-	private boolean fixed;
+	public  Case getCases(PositionIndexEnum index) {
+		return cases.get(index);
+	}
+	private boolean gridFilled;
 	public Map<Integer, Object> checkCandidate(Map<Integer, Object> result){
 		Case candidate = (Case) result.get(1);
-		fixed = true;
+		gridFilled = true;
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
 			Case caze = cases.get(positionIndexEnum);
 			
@@ -332,9 +350,9 @@ public class Group {
 			if(candidate.getState() == StateCaseEnum.FILLED || caze.sizeOfCandidate() < candidate.sizeOfCandidate()){
 				candidate = caze;
 			}
-			fixed = fixed & (caze.sizeOfCandidate() == 0);
+			gridFilled = gridFilled & (caze.sizeOfCandidate() == 0);
 		}
-		result.put(0, fixed);
+		result.put(0, gridFilled);
 		result.put(1, candidate);
 		return result;
 	}
