@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.mcissoko.play.sudoku.api.PlaySequence;
+import com.mcissoko.play.sudoku.api.Sequence;
 
 public class Case {
 
@@ -39,13 +40,6 @@ public class Case {
 		this.candidates = new ArrayList<>(candidates);
 	}
 
-	private int pop(Integer candidate){
-		//Integer candidate = oneCandidate();
-		candidates.remove(candidate);
-		
-		return candidate.intValue();
-	}
-	
 	private Integer oneCandidate(){
 		List<Integer> list = new ArrayList<>(candidates);
 		list.removeAll(triedCandidates);
@@ -66,9 +60,7 @@ public class Case {
 		}
 		setContent(candidate);
 		
-		if(!this.triedCandidates.contains(candidate)){
-			this.triedCandidates.add(candidate);
-		}
+		
 //		if(!this.group.isContentUnique(this)){
 //			//removeCandidate(candidate);
 //			this.resetContent();
@@ -102,7 +94,7 @@ public class Case {
 	
 	public void removeCandidate(Integer candidate, PlaySequence playSequence){
 		candidates.remove(candidate);
-		playSequence.getSellectedBoxes().add(new PlaySequence(this.group.getIndex(), getPosition().getIndex()));
+		playSequence.getSequences().add(new Sequence(this.group.getIndex(), getPosition().getIndex()));
 	}
 	
 
@@ -135,6 +127,9 @@ public class Case {
 		this.content = content;
 		this.state = StateCaseEnum.FILLED;
 		
+		if(!this.triedCandidates.contains(content)){
+			this.triedCandidates.add(content);
+		}
 	}
 	public void resetContent() {
 		this.content =  0;

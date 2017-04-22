@@ -10,6 +10,7 @@ import com.mcissoko.play.sudoku.Group;
 import com.mcissoko.play.sudoku.GroupIndexEnum;
 import com.mcissoko.play.sudoku.PositionIndexEnum;
 import com.mcissoko.play.sudoku.api.PlaySequence;
+import com.mcissoko.play.sudoku.api.Sequence;
 
 public class Grille {
 
@@ -145,9 +146,9 @@ public class Grille {
 		Case caze = group.getCases(last.getPositionIndex());
 		caze.resetContent();
 		caze.setCandidates(last.getCandidates());
-		for(PlaySequence ps: last.getSellectedBoxes()){
-			Group g = getGroup(ps.getGroupIndex());
-			g.getCases(ps.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
+		for(Sequence seq: last.getSequences()){
+			Group g = getGroup(seq.getGroupIndex());
+			g.getCases(seq.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
 		}
 		
 		if(caze.getCandidates().size() == 1){

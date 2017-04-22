@@ -13,7 +13,7 @@ public class PlaySequence {
 	private Integer sellectedCandidate;
 	private List<Integer> candidates;
 	
-	private List<PlaySequence> sellectedBoxes;
+	private List<Sequence> sequences;
 
 	public PlaySequence(GroupIndexEnum groupIndex, PositionIndexEnum positionIndex, Integer sellectedCandidate, List<Integer> candidates) {
 		super();
@@ -23,7 +23,7 @@ public class PlaySequence {
 		
 		this.candidates = new ArrayList<>(candidates);
 		
-		this.sellectedBoxes = new ArrayList<>();
+		this.sequences = new ArrayList<>();
 		
 	}
 
@@ -33,14 +33,12 @@ public class PlaySequence {
 		this.positionIndex = positionIndex;
 	}
 	
-
-	
-	public List<PlaySequence> getSellectedBoxes() {
-		return sellectedBoxes;
+	public List<Sequence> getSequences() {
+		return sequences;
 	}
 
-	public void setSellectedBoxes(List<PlaySequence> sellectedBoxes) {
-		this.sellectedBoxes = sellectedBoxes;
+	public void setSequences(List<Sequence> sequences) {
+		this.sequences = sequences;
 	}
 
 	public GroupIndexEnum getGroupIndex() {

@@ -27,51 +27,63 @@ public class Sudoku {
 			boolean seach = true;
 			
 			while(!gridFilled){
-				gridFilled = true;
+				
 				result.put(0, gridFilled);
 				if(seach){
+					gridFilled = true;
 					for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
 						Group group = grid.getGroup(groupIndexEnum);
 						result = group.checkCandidate(result);
 						gridFilled = gridFilled & (boolean) result.get(0);
-					}
-					if(gridFilled || candidate == null){
-						if(gridFilled && grid.isSudoku()){
-							System.out.println(grid);
-							System.out.println("resolu");
-							return;
-						}else{
-							System.out.println("Echec");
-							grid = new Grille();
-							process();
-							return;
-						}
-						
-					}else{
-						candidate = (Case) result.get(1);
-						if(candidate.getState() == StateCaseEnum.FILLED){
-							continue;
-						}						
-					}
+					}	
+					candidate = (Case) result.get(1);
+//					if(candidate.getState() == StateCaseEnum.FILLED){
+//						seach = true;
+//						
+//						//continue;
+//					}		
 				}
+				if(gridFilled){
+					if(grid.isSudoku()){
+						System.out.println(grid);
+						System.out.println("resolu");
+						return;
+					}else{
+						System.out.println("Echec");
+//						grid = new Grille();
+//						process();
+						return;
+					}
+					
+				}else{
+					if(candidate.getState() == StateCaseEnum.FILLED){
+						seach = true;
+						
+						continue;
+					}	
+				}
+				
 				
 				PlaySequence playSequence = candidate.fillContent();
-				boolean restaure = false;
+				//boolean restaure = false;
 				if(playSequence == null ){
-					restaure = true;
-				}
-				
-				if(!restaure && !candidate.getGroup().removeCandidate(candidate, playSequence)){
-					restaure = true;
-				}
-				if(restaure){
+					
+					
 					System.out.println(candidate);
 					System.err.println(grid);//-------------------------------------------
 					candidate = grid.restaure();
-					seach = candidate == null ? true : false;
+					if(candidate == null){
+						System.err.println("KO");
+						return;
+					}
+					seach = false;
 					gridFilled = false;
 					continue;
+					
 				}
+				
+				candidate.getGroup().removeCandidate(candidate, playSequence);
+				
 				
 				grid.addPlaySequence(playSequence); 
 				
@@ -84,7 +96,7 @@ public class Sudoku {
 			grid = new Grille();
 			process();
 		}
-		
+		System.out.println("dddddddddddddd");
 	}
 	
 	public Entry<Integer, Integer> max(Map<Integer, Integer> occurrence){
