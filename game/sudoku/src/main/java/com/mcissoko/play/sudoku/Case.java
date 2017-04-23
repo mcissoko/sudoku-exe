@@ -51,6 +51,10 @@ public class Case {
 		return candidate;
 	}
 	
+	public void resetTried(){
+		this.triedCandidates.clear();
+	}
+	
 	public PlaySequence fillContent(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
@@ -186,6 +190,10 @@ public class Case {
 			return;
 		}
 		candidates.add(sellectedCandidate);
+	}
+
+	public boolean hasCandidate(Integer content) {
+		return this.candidates.contains(content);
 	}
 
 	

@@ -79,10 +79,10 @@ public class Sudoku {
 				PlaySequence playSequence = candidate.fillContent();
 				//boolean restaure = false;
 				if(playSequence == null ){
-					
+					candidate.resetTried();
 					
 					System.out.println(candidate);
-					System.err.println(grid);//-------------------------------------------
+					System.err.println(grid);
 					candidate = grid.restaure();
 					if(candidate == null){
 						System.err.println("KO");
@@ -102,15 +102,11 @@ public class Sudoku {
 				
 				seach = true;
 				gridFilled = false;
-				System.out.println(candidate +"; candidates: "+ playSequence.getCandidates()+"; essais: "+candidate.getTriedCandidates());
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 //			System.out.println(grid);
-//			grid = new Grille();
-//			process();
 		}
-		//System.out.println(grid.getPlaySequence().size());
 	}
 	
 	public Entry<Integer, Integer> max(Map<Integer, Integer> occurrence){

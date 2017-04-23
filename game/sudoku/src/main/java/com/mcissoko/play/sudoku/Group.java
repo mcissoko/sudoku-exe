@@ -192,20 +192,11 @@ public class Group {
 		int line = filled.getPosition().getCoordinate().getLine();
 		for(Case caze : cases.values()){
 			if(caze.getPosition().getCoordinate().getLine() == line){
-//				if(caze.sizeOfCandidate() == 1 && filled.getContent().equals(caze.getCandidates().get(0))){
-////					PlaySequence ps =  caze.fillContent();
-////					removeCandidate(caze, ps);
-////					grid.addPlaySequence(ps);
-////					continue;
-//					System.out.println("Echec tentative: aucun candidat (2)");
-//					return false;
-//				}
-				 caze.removeCandidate(filled.getContent(), playSequence);
-				 //System.out.println(caze);
-				 //System.out.println(caze.getCandidates());
+				if(caze.hasCandidate(filled.getContent())){
+					caze.removeCandidate(filled.getContent(), playSequence);
+				}
 			}
 		}
-		//return true;
 	}
 	
 	public boolean isNumberInGroupColumn(Case caze) {
@@ -233,19 +224,13 @@ public class Group {
 		int column = filled.getPosition().getCoordinate().getColumn();
 		for(Case caze : cases.values()){
 			if(caze.getPosition().getCoordinate().getColumn() == column){
-//				if(caze.sizeOfCandidate() == 1 && filled.getContent().equals(caze.getCandidates().get(0))){
-////					PlaySequence ps =  caze.fillContent();
-////					removeCandidate(caze, ps);
-////					grid.addPlaySequence(ps);
-////					continue;
-//					System.out.println("Echec tentative: aucun candidat (3)");
-//					return false;
-//				}
-				caze.removeCandidate(filled.getContent(), playSequence);
+
+				if(caze.hasCandidate(filled.getContent())){
+					caze.removeCandidate(filled.getContent(), playSequence);
+				}
 			}
 		}
 		
-		//return true;
 	}
 		
 	/**
@@ -283,27 +268,16 @@ public class Group {
 			if (index == caze.getPosition().getIndex()) {
 				continue;
 			}
-//			if(caze.sizeOfCandidate() == 1 && candidate.equals(caze.getCandidates().get(0))){
-////				PlaySequence ps =  caze.fillContent();
-////				removeCandidate(caze, ps);
-////				grid.addPlaySequence(ps);
-////				continue;
-//				System.out.println("Echec tentative: aucun candidat ()");
-//				return false;
-//			}
-			caze.removeCandidate(candidate, playSequence);
 			
-			//System.out.println(caze);
-			//System.out.println(caze.getCandidates());
+			if(caze.hasCandidate(filled.getContent())){
+				caze.removeCandidate(filled.getContent(), playSequence);
+			}
 		}
-		//return 
 		grid.getGroup(groupLine[0]).removeCandidateInGroupLine(filled, playSequence);
 		grid.getGroup(groupLine[1]).removeCandidateInGroupLine(filled, playSequence) ;
 		
 		grid.getGroup(groupColumn[0]).removeCandidateInGroupColumn(filled, playSequence) ;
 		grid.getGroup(groupColumn[1]).removeCandidateInGroupColumn(filled, playSequence);
-		
-		
 	}
 	
 	
