@@ -40,6 +40,11 @@ public class Grille {
 		return this.playSequence.pop();
 	}
 	
+	
+	public Deque<PlaySequence> getPlaySequence() {
+		return playSequence;
+	}
+
 	public boolean isNumberInGrilleLine(Case caze) {
 		
 		Group group = groups.get(caze.getPosition().getGroupIndex());
@@ -144,6 +149,7 @@ public class Grille {
 		}
 		Group group = getGroup(last.getGroupIndex());
 		Case caze = group.getCases(last.getPositionIndex());
+		//caze.getTriedCandidates().remove(caze.getContent());
 		caze.resetContent();
 		caze.setCandidates(last.getCandidates());
 		for(Sequence seq: last.getSequences()){

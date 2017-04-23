@@ -54,7 +54,7 @@ public class Case {
 	public PlaySequence fillContent(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
-			//System.out.println(group.getIndex()+  ";" + position.getIndex());
+			//System.out.println(this+ "; essais: " + this.triedCandidates);
 			//System.out.println("Echec tentative");
 			return null;
 		}
@@ -109,6 +109,10 @@ public class Case {
 
 	public Group getGroup() {
 		return group;
+	}
+	
+	public List<Integer> getTriedCandidates() {
+		return triedCandidates;
 	}
 
 	public void setState(StateCaseEnum state) {

@@ -47,12 +47,24 @@ public class Sudoku {
 					if(grid.isSudoku()){
 						System.out.println(grid);
 						System.out.println("resolu");
+						//System.out.println(grid.getPlaySequence().size());
 						return;
 					}else{
 						System.out.println("Echec");
-//						grid = new Grille();
-//						process();
-						return;
+//						
+						System.err.println(grid);
+						System.out.println(grid.getPlaySequence().size());
+						System.out.println(candidate);
+						
+						candidate = grid.restaure();
+						if(candidate == null){
+							System.err.println("KO 1");
+							return;
+						}
+						seach = false;
+						gridFilled = false;
+						continue;
+						
 					}
 					
 				}else{
@@ -74,6 +86,7 @@ public class Sudoku {
 					candidate = grid.restaure();
 					if(candidate == null){
 						System.err.println("KO");
+						System.out.println(grid.getPlaySequence().size());
 						return;
 					}
 					seach = false;
@@ -89,14 +102,15 @@ public class Sudoku {
 				
 				seach = true;
 				gridFilled = false;
+				System.out.println(candidate +"; candidates: "+ playSequence.getCandidates()+"; essais: "+candidate.getTriedCandidates());
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
-			System.out.println(grid);
-			grid = new Grille();
-			process();
+//			System.out.println(grid);
+//			grid = new Grille();
+//			process();
 		}
-		System.out.println("dddddddddddddd");
+		//System.out.println(grid.getPlaySequence().size());
 	}
 	
 	public Entry<Integer, Integer> max(Map<Integer, Integer> occurrence){
