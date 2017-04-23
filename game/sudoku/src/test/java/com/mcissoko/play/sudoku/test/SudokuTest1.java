@@ -9,14 +9,29 @@ import java.util.Random;
 import com.mcissoko.play.sudoku.Group;
 import com.mcissoko.play.sudoku.GroupIndexEnum;
 import com.mcissoko.play.sudoku.PositionIndexEnum;
+import com.mcissoko.play.sudoku.Sudoku;
 import com.mcissoko.play.sudoku.player.Grille;
 
 public class SudokuTest1 {
 
 	public static void main(String[] args) {
-		test3();
+		test4();
 	}
 	
+	public static void test4(){
+		Sudoku sudoku = new Sudoku();
+		int result = 0;
+		while(result == 0){
+			result = sudoku.process();
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.err.println(result);
+	}
 	public static void test3(){
 		Deque<String> queue = new ArrayDeque<>();
 		queue.addFirst("Un");

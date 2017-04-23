@@ -17,7 +17,7 @@ public class Sudoku {
 		 
 	}
 	
-	public void process(){
+	public int process(){
 		try {
 			Map<Integer, Object> result = new HashMap<>();
 			Case candidate = grid.getGroup(GroupIndexEnum.INDEX_1).getCases().get(PositionIndexEnum.INDEX_1);
@@ -37,21 +37,18 @@ public class Sudoku {
 						gridFilled = gridFilled & (boolean) result.get(0);
 					}	
 					candidate = (Case) result.get(1);
-//					if(candidate.getState() == StateCaseEnum.FILLED){
-//						seach = true;
-//						
-//						//continue;
-//					}		
 				}
 				if(gridFilled){
 					if(grid.isSudoku()){
 						System.out.println(grid);
 						System.out.println("resolu");
 						//System.out.println(grid.getPlaySequence().size());
-						return;
-					}else{
-						System.out.println("Echec");
-//						
+						return 0;
+					}
+					/*
+					else{
+						System.err.println("Echec");
+						
 						System.err.println(grid);
 						System.out.println(grid.getPlaySequence().size());
 						System.out.println(candidate);
@@ -66,7 +63,9 @@ public class Sudoku {
 						continue;
 						
 					}
-					
+					//*/
+					System.err.println("Echec");
+					return 1;
 				}else{
 					if(candidate.getState() == StateCaseEnum.FILLED){
 						seach = true;
@@ -87,7 +86,7 @@ public class Sudoku {
 					if(candidate == null){
 						System.err.println("KO");
 						System.out.println(grid.getPlaySequence().size());
-						return;
+						return 2;
 					}
 					seach = false;
 					gridFilled = false;
@@ -106,7 +105,9 @@ public class Sudoku {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 //			System.out.println(grid);
+			return -1;
 		}
+		return -2;
 	}
 	
 	public Entry<Integer, Integer> max(Map<Integer, Integer> occurrence){
