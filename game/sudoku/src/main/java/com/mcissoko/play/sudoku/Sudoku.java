@@ -20,7 +20,7 @@ public class Sudoku {
 	public int process(){
 		try {
 			Map<Integer, Object> result = new HashMap<>();
-			//Case candidate = grid.getGroup(GroupIndexEnum.INDEX_1).getCases().get(PositionIndexEnum.INDEX_1);
+			
 			Case candidate = grid.random();
 			System.out.println("Case depart: " + candidate);
 			boolean gridFilled;
@@ -47,38 +47,17 @@ public class Sudoku {
 						//System.out.println(grid.getPlaySequence().size());
 						return 0;
 					}
-					/*
-					else{
-						System.err.println("Echec");
-						
-						System.err.println(grid);
-						System.out.println(grid.getPlaySequence().size());
-						System.out.println(candidate);
-						
-						candidate = grid.restaure();
-						if(candidate == null){
-							System.err.println("KO 1");
-							return -1;
-						}
-						seach = false;
-						gridFilled = false;
-						continue;
-						
-					}
-					//*/
+					
 					System.err.println("Echec");
 					return 1;
 				}else{
-					if(candidate.getState() == StateCaseEnum.FILLED){
+					if(candidate.getState() == StateCaseEnum.FILLED || candidate.getState() == StateCaseEnum.FIXED){
 						seach = true;
-						
 						continue;
 					}	
 				}
 				
-				
-				PlaySequence playSequence = candidate.fillContent();
-				//boolean restaure = false;
+				PlaySequence playSequence = candidate.fill();
 				if(playSequence == null ){
 					candidate.resetTried();
 					
@@ -93,11 +72,9 @@ public class Sudoku {
 					seach = false;
 					gridFilled = false;
 					continue;
-					
 				}
 				
 				candidate.getGroup().removeCandidate(candidate, playSequence);
-				
 				
 				grid.addPlaySequence(playSequence); 
 				
@@ -137,29 +114,6 @@ public class Sudoku {
 		
 		Sudoku player = new Sudoku();
 		player.process();
-		/*
-		Grille grille = new Grille();
-		
-		GroupPlayer[] gPlager = new GroupPlayer[9];
-		
-		for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
-			gPlager[groupIndexEnum.getIndex() - 1] = new GroupPlayer(grille, groupIndexEnum);
-		}
-		gPlager[0].start();
-		for(int i = 1; i < gPlager.length; i++){
-			
-			try {
-				gPlager[i].start();
-				gPlager[i].wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
-		//*/
-		
 	
 	}
 	

@@ -318,10 +318,10 @@ public class Group {
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
 			Case caze = cases.get(positionIndexEnum);
 			
-			if(caze.getState() == StateCaseEnum.FILLED){
+			if(caze.getState() == StateCaseEnum.FILLED || caze.getState() == StateCaseEnum.FIXED){
 				continue;
 			}
-			if(candidate.getState() == StateCaseEnum.FILLED || caze.sizeOfCandidate() < candidate.sizeOfCandidate()){
+			if((candidate.getState() == StateCaseEnum.FILLED || candidate.getState() == StateCaseEnum.FIXED) || (caze.sizeOfCandidate() < candidate.sizeOfCandidate())){
 				candidate = caze;
 			}
 			gridFilled = gridFilled & (caze.sizeOfCandidate() == 0);

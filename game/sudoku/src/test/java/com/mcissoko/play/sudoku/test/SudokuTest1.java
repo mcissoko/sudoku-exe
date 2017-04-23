@@ -25,7 +25,7 @@ public class SudokuTest1 {
 			Sudoku sudoku = new Sudoku();
 			result = sudoku.process();
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

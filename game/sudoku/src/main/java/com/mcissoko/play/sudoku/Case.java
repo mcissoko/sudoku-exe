@@ -37,6 +37,9 @@ public class Case {
 	}
 	
 	public void setCandidates(List<Integer> candidates) {
+		if(this.state == StateCaseEnum.FIXED){
+			return;
+		}
 		this.candidates = new ArrayList<>(candidates);
 	}
 
@@ -55,47 +58,18 @@ public class Case {
 		this.triedCandidates.clear();
 	}
 	
-	public PlaySequence fillContent(){
+	public PlaySequence fill(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
-			//System.out.println(this+ "; essais: " + this.triedCandidates);
-			//System.out.println("Echec tentative");
 			return null;
 		}
 		setContent(candidate);
 		
-		
-//		if(!this.group.isContentUnique(this)){
-//			//removeCandidate(candidate);
-//			this.resetContent();
-//			fillContent();
-//			
-//			return;
-//		}else{
-//			this.setContent(candidate);
-//			pop(candidate);
-//		}
 		PlaySequence playSequence = new PlaySequence(getGroup().getIndex(), getPosition().getIndex(), getContent(), getCandidates());
 		getCandidates().clear();	
 		return playSequence;
 	}
-//	public void fillContent(Integer candidate){
-//		candidates.remove(candidate);
-//		setContent(candidate);
-//		if(!this.group.isContentUnique(this)){
-//			removeCandidate(candidate);
-//			this.resetContent();
-//			fillContent();
-//			
-//			return;
-//		}else{
-//			this.setContent(candidate);
-//			pop(candidate);
-//			candidates.clear();			
-//		}
-//		
-//	}
-	
+
 	public void removeCandidate(Integer candidate, PlaySequence playSequence){
 		candidates.remove(candidate);
 		playSequence.getSequences().add(new Sequence(this.group.getIndex(), getPosition().getIndex()));
@@ -140,6 +114,9 @@ public class Case {
 		}
 	}
 	public void resetContent() {
+		if(this.state == StateCaseEnum.FIXED){
+			return;
+		}
 		this.content =  0;
 		this.state = StateCaseEnum.EMPTY;
 	}
@@ -186,7 +163,7 @@ public class Case {
 	}
 
 	public void restaureCandidate(Integer sellectedCandidate) {
-		if(candidates.contains(sellectedCandidate)){
+		if(this.state == StateCaseEnum.FIXED || candidates.contains(sellectedCandidate)){
 			return;
 		}
 		candidates.add(sellectedCandidate);

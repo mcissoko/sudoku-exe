@@ -156,12 +156,11 @@ public class Grille {
 	public Case restaure() {
 		PlaySequence last = getLastPlaySequence();
 		if(last == null){
-			
 			return null;
 		}
 		Group group = getGroup(last.getGroupIndex());
 		Case caze = group.getCases(last.getPositionIndex());
-		//caze.getTriedCandidates().remove(caze.getContent());
+		
 		caze.resetContent();
 		caze.setCandidates(last.getCandidates());
 		for(Sequence seq: last.getSequences()){
@@ -170,8 +169,9 @@ public class Grille {
 		}
 		
 		if(caze.getCandidates().size() == 1){
-			System.err.println("Un seul candidat disponible: " + caze);
-			System.err.println(this);
+			System.err.println("Un seul candidat disponible: " + caze +", on remonte d'un cran");
+			//System.err.println(this);
+			caze.resetTried();
 			return this.restaure();
 		}
 		

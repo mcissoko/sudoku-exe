@@ -2,7 +2,7 @@ package com.mcissoko.play.sudoku;
 
 public enum StateCaseEnum {
 
-	EMPTY(0, "Libre"), FILLED(1, "Ocuppée"), FIXED(-1, "Resolu");
+	EMPTY(0, "Libre"), FILLED(1, "OcuppÃ©e"), FIXED(-1, "Resolu");
 	
 	private int id;
 	private String label;
