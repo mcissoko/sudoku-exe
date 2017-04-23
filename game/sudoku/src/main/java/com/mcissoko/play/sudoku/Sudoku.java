@@ -20,7 +20,9 @@ public class Sudoku {
 	public int process(){
 		try {
 			Map<Integer, Object> result = new HashMap<>();
-			Case candidate = grid.getGroup(GroupIndexEnum.INDEX_1).getCases().get(PositionIndexEnum.INDEX_1);
+			//Case candidate = grid.getGroup(GroupIndexEnum.INDEX_1).getCases().get(PositionIndexEnum.INDEX_1);
+			Case candidate = grid.random();
+			System.out.println("Case depart: " + candidate);
 			boolean gridFilled;
 			result.put(1, candidate );
 			gridFilled = false;
@@ -56,7 +58,7 @@ public class Sudoku {
 						candidate = grid.restaure();
 						if(candidate == null){
 							System.err.println("KO 1");
-							return;
+							return -1;
 						}
 						seach = false;
 						gridFilled = false;

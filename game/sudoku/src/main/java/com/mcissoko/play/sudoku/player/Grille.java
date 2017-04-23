@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import com.mcissoko.play.sudoku.Case;
 import com.mcissoko.play.sudoku.Group;
@@ -27,6 +28,17 @@ public class Grille {
 		for(GroupIndexEnum i: GroupIndexEnum.values()){
 			groups.put(i, new Group(i, this));
 		}
+	}
+	
+	public Case random(){
+		
+		Random randomizer = new Random();
+		
+		int i = randomizer.nextInt(groups.size());
+		GroupIndexEnum index = GroupIndexEnum.fromIndex(i);
+		Group group = groups.get(index);
+		Case caze = group.random();
+		return caze;
 	}
 	
 	public void addPlaySequence(PlaySequence playSequence){

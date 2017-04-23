@@ -19,16 +19,18 @@ public class SudokuTest1 {
 	}
 	
 	public static void test4(){
-		Sudoku sudoku = new Sudoku();
 		int result = 0;
 		while(result == 0){
+			System.out.println("============== start ===============");
+			Sudoku sudoku = new Sudoku();
 			result = sudoku.process();
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.out.println("============== end ===============");
 		}
 		System.err.println(result);
 	}

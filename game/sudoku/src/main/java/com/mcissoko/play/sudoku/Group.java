@@ -2,6 +2,7 @@ package com.mcissoko.play.sudoku;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import com.mcissoko.play.sudoku.api.PlaySequence;
 import com.mcissoko.play.sudoku.player.Grille;
@@ -261,7 +262,6 @@ public class Group {
 	
 	public void removeCandidate(Case filled, PlaySequence playSequence){
 		PositionIndexEnum index = filled.getPosition().getIndex();
-		Integer candidate = filled.getContent();
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
 			Case caze = cases.get(positionIndexEnum);
 			
@@ -395,6 +395,16 @@ public class Group {
 		grid.getGroup(groupColumn[0]).calculateOccurenceInGroupColumn(box, occurrenceInColumn);
 		grid.getGroup(groupColumn[1]).calculateOccurenceInGroupColumn(box, occurrenceInColumn);
 		
+	}
+
+	public Case random() {
+		Random randomizer = new Random();		
+		
+		int i = randomizer.nextInt(cases.size());
+		PositionIndexEnum index = PositionIndexEnum.fromIndex(i);
+		Case caze = cases.get(index);
+		
+		return caze;
 	}
 }
 
