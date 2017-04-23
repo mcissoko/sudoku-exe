@@ -58,12 +58,21 @@ public class Case {
 		this.triedCandidates.clear();
 	}
 	
+	public void fix(Integer value){
+		this.content = value;
+		this.state = StateCaseEnum.FIXED;
+		this.candidates.clear();
+	}
 	public PlaySequence fill(){
 		Integer candidate = oneCandidate();
 		if(candidate == 0){
 			return null;
 		}
-		setContent(candidate);
+		fillContent(candidate);
+		if(!this.group.isContentUnique(this)){
+			this.resetContent();
+			return this.fill();
+		}
 		
 		PlaySequence playSequence = new PlaySequence(getGroup().getIndex(), getPosition().getIndex(), getContent(), getCandidates());
 		getCandidates().clear();	
@@ -105,7 +114,7 @@ public class Case {
 		return content;
 	}
 
-	public void setContent(Integer content) {
+	public void fillContent(Integer content) {
 		this.content = content;
 		this.state = StateCaseEnum.FILLED;
 		

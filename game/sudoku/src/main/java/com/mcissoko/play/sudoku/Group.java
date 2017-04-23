@@ -289,7 +289,12 @@ public class Group {
 	
 	
 	public Group fillCase(PositionIndexEnum positionIndex, int content){
-		cases.get(positionIndex).setContent(content);
+		cases.get(positionIndex).fillContent(content);
+		return this;
+	}
+	
+	public Group fixCase(PositionIndexEnum positionIndex, int content){
+		cases.get(positionIndex).fix(content);
 		return this;
 	}
 	
@@ -319,6 +324,7 @@ public class Group {
 			Case caze = cases.get(positionIndexEnum);
 			
 			if(caze.getState() == StateCaseEnum.FILLED || caze.getState() == StateCaseEnum.FIXED){
+				gridFilled = gridFilled & true;
 				continue;
 			}
 			if((candidate.getState() == StateCaseEnum.FILLED || candidate.getState() == StateCaseEnum.FIXED) || (caze.sizeOfCandidate() < candidate.sizeOfCandidate())){

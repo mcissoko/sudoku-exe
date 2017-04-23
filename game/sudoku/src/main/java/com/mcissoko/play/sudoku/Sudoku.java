@@ -14,9 +14,13 @@ public class Sudoku {
 		
 	public Sudoku() {
 		grid = new Grille();
-		 
 	}
 	
+	public Sudoku(Grille grid) {
+		super();
+		this.grid = grid;
+	}
+
 	public int process(){
 		try {
 			Map<Integer, Object> result = new HashMap<>();
@@ -44,10 +48,10 @@ public class Sudoku {
 					if(grid.isSudoku()){
 						System.out.println(grid);
 						System.out.println("resolu");
-						//System.out.println(grid.getPlaySequence().size());
 						return 0;
 					}
-					
+					System.err.println(grid);
+					System.out.println(grid.getPlaySequence().size());
 					System.err.println("Echec");
 					return 1;
 				}else{
