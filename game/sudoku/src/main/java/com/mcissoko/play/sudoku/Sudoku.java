@@ -1,6 +1,7 @@
 package com.mcissoko.play.sudoku;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,8 +24,8 @@ public class Sudoku {
 
 	public int process(){
 		try {
+			//Date t1 = new Date();
 			Map<Integer, Object> result = new HashMap<>();
-			
 			Case candidate = grid.random();
 			System.out.println("Case depart: " + candidate);
 			boolean gridFilled;
@@ -46,7 +47,9 @@ public class Sudoku {
 				}
 				if(gridFilled){
 					if(grid.isSudoku()){
+						//Date t2 = new Date();
 						System.out.println(grid);
+						//System.out.println(t2.getTime() - t1.getTime());
 						System.out.println("resolu");
 						return 0;
 					}
@@ -65,12 +68,13 @@ public class Sudoku {
 				if(playSequence == null ){
 					candidate.resetTried();
 					
-					System.out.println(candidate);
+					//--System.out.println(candidate);
+					
 					System.err.println(grid);
 					candidate = grid.restaure();
 					if(candidate == null){
 						System.err.println("KO");
-						System.out.println(grid.getPlaySequence().size());
+						//--System.out.println(grid.getPlaySequence().size());
 						return 2;
 					}
 					seach = false;
@@ -84,6 +88,7 @@ public class Sudoku {
 				
 				seach = true;
 				gridFilled = false;
+				//System.out.println(grid);
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -120,5 +125,14 @@ public class Sudoku {
 		player.process();
 	
 	}
+
+	public Grille getGrid() {
+		return grid;
+	}
+
+	public void setGrid(Grille grid) {
+		this.grid = grid;
+	}
+	
 	
 }

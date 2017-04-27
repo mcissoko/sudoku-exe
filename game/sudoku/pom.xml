@@ -18,12 +18,12 @@
 				<version>2.3.2</version>
 				<inherited>true</inherited>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<showDeprecation>false</showDeprecation>
 					<showWarnings>true</showWarnings>
 					<optimize>true</optimize>
-					<compilerVersion>1.7</compilerVersion>
+					<compilerVersion>1.8</compilerVersion>
 					<fork>true</fork>
 					<compilerArguments>
 						<encoding>UTF-8</encoding>

@@ -159,13 +159,13 @@ public class Grille {
 			return null;
 		}
 		Group group = getGroup(last.getGroupIndex());
-		Case caze = group.getCases(last.getPositionIndex());
+		Case caze = group.getCase(last.getPositionIndex());
 		
 		caze.resetContent();
 		caze.setCandidates(last.getCandidates());
 		for(Sequence seq: last.getSequences()){
 			Group g = getGroup(seq.getGroupIndex());
-			g.getCases(seq.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
+			g.getCase(seq.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
 		}
 		
 		if(caze.getCandidates().size() == 1){

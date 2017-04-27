@@ -15,7 +15,7 @@ import com.mcissoko.play.sudoku.player.Grille;
 public class SudokuTest1 {
 
 	public static void main(String[] args) {
-		test1();
+		test4();
 	}
 	
 	public static void test4(){

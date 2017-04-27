@@ -313,13 +313,12 @@ public class Group {
 	public Map<PositionIndexEnum, Case> getCases() {
 		return cases;
 	}
-	public  Case getCases(PositionIndexEnum index) {
+	public  Case getCase(PositionIndexEnum index) {
 		return cases.get(index);
 	}
-	private boolean gridFilled;
 	public Map<Integer, Object> checkCandidate(Map<Integer, Object> result){
 		Case candidate = (Case) result.get(1);
-		gridFilled = true;
+		boolean gridFilled = true;
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
 			Case caze = cases.get(positionIndexEnum);
 			
