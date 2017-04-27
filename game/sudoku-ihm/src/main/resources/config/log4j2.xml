@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Configuration status="info">
+
+	<Appenders>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss,SSS}\t%-5p\t%-50.50c\t%m%n" />
+		</Console>
+
+		<RollingFile name="file" filename="../log/svc_bdtr.log" filePattern="../log/svc_bdtr-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss,SSS}\t%-5p\t%-50.50c\t%m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+		
+		<RollingFile name="sqlFile" filename="../log/sql.log" filePattern="../log/sql-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss,SSS}\t%-5p\t%-40.40c\t%m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+	
+		<!-- Conf pour le gestionnaire de pool de connexion c3p0 -->
+		<Logger name="com.mchange.v2" level="warn" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Logger>
+	
+		<Logger name="org.hibernate" level="warn" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Logger>
+
+		<Logger name="org.hibernate.SQL" level="debug" additivity="false">
+			<AppenderRef ref="sqlFile" />
+		</Logger>
+		<Logger name="org.hibernate.type.descriptor.sql" level="WARN" additivity="false">
+			<AppenderRef ref="sqlFile" />
+		</Logger>
+
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Root>
+		
+	</Loggers>
+
+</Configuration>

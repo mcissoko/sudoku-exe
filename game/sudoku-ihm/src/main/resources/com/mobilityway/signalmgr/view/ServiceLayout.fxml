@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="657.0" prefWidth="1257.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mobilityway.signalmgr.view.ServiceController">
+   <children>
+      <TableView fx:id="serviceTable" layoutX="14.0" layoutY="61.0" prefHeight="334.0" prefWidth="250.0">
+         <columns>
+            <TableColumn fx:id="nomColumn" prefWidth="163.0" text="Nom" />
+            <TableColumn fx:id="versionColumn" prefWidth="86.00003051757812" text="Version" />
+         </columns>
+      </TableView>
+      <Label layoutX="75.0" layoutY="22.0" text="La liste des signaux" />
+      <Separator layoutX="278.0" layoutY="31.0" orientation="VERTICAL" prefHeight="362.0" prefWidth="3.0" />
+      <Pane layoutX="857.0" layoutY="25.0" prefHeight="540.0" prefWidth="400.0">
+         <children>
+            <TitledPane fx:id="signauxSubscribePane" animated="false" layoutY="46.0" prefHeight="206.0" prefWidth="180.0" text="Signaux SUBSCRIBE">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="186.0">
+                     <children>
+                        <TableView fx:id="signauxSubscribeTable" layoutX="-22.0" layoutY="14.0" prefHeight="180.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="nomSignauxSubscribeColumn" editable="false" maxWidth="200.0" prefWidth="79.00000154972076" text="Signal" />
+                              <TableColumn fx:id="versionSignauxSubscribeColumn" prefWidth="71.99999237060547" text="Versions" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="signauxProvidePane" animated="false" layoutX="202.0" layoutY="46.0" prefHeight="206.0" prefWidth="180.0" text="Signaux PROVIDE">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="186.0">
+                     <children>
+                        <TableView fx:id="signauxProvideTable" layoutX="5.0" layoutY="-11.0" prefHeight="180.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="nomSignauxProvideColumn" prefWidth="85.00000154972076" text="Signal" />
+                              <TableColumn fx:id="versionSignauxProvideColumn" prefWidth="67.99999237060547" text="Versions" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="signauxPushPane" animated="false" layoutY="314.0" prefHeight="206.0" prefWidth="180.0" text="Signaux PUSH">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="signauxPushTable" layoutX="-23.0" layoutY="-43.0" prefHeight="180.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="nomSignauxPushColumn" prefWidth="82.00000154972076" text="Signal" />
+                              <TableColumn fx:id="versionSignauxPushColumn" prefWidth="72.99999237060547" text="Versions" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="signauxQueryPane" animated="false" layoutX="202.0" layoutY="314.0" prefHeight="206.0" prefWidth="180.0" text="Signaux QUERY">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="signauxQueryTable" layoutX="-16.0" layoutY="-18.0" prefHeight="180.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="nomSignauxQueryColumn" prefWidth="84.00000154972076" text="Signal" />
+                              <TableColumn fx:id="versionSignauxQueryColumn" prefWidth="68.99999237060547" text="Versions" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </TitledPane>
+            <Label layoutX="111.0" layoutY="14.0" text="Les services associés au signal" />
+            <Button fx:id="dissocierBtn" disable="true" layoutX="136.0" layoutY="270.0" mnemonicParsing="false" onAction="#handleDissocier" prefHeight="25.0" prefWidth="108.0" text="Dissocier" />
+         </children>
+      </Pane>
+      <Pane fx:id="associationServiceSignalPane" disable="true" layoutX="16.0" layoutY="395.0" prefHeight="252.0" prefWidth="846.0">
+         <children>
+            <Button fx:id="associerBtn" disable="true" layoutX="638.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleAssocier" prefWidth="150.0" text="Associer" />
+            <GridPane layoutX="398.0" layoutY="30.0" prefHeight="40.0" prefWidth="368.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="160.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="0.0" prefWidth="0.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="217.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Liste des signaux à associer" />
+                  <ComboBox fx:id="signauxAssocierCBox" editable="true" onAction="#handleSignalSelection" prefWidth="150.0" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
+            <Pane layoutX="67.0" layoutY="21.0" prefHeight="138.0" prefWidth="219.0">
+               <children>
+                  <RadioButton fx:id="subcribeRadio" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleTypeAssociation" text="SUBSCRIBE" />
+                  <RadioButton fx:id="provideRadio" layoutX="140.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleTypeAssociation" text="PROVIDE" />
+                  <RadioButton fx:id="pushRadio" layoutX="14.0" layoutY="92.0" mnemonicParsing="false" onAction="#handleTypeAssociation" text="PUSH" />
+                  <RadioButton fx:id="queryRadio" layoutX="140.0" layoutY="92.0" mnemonicParsing="false" onAction="#handleTypeAssociation" text="QUERY" />
+               </children>
+            </Pane>
+            <Label layoutX="72.0" layoutY="13.0" text="Selection du type d'association/action" />
+            <ListView fx:id="signalVersionsListView" layoutX="553.0" layoutY="77.0" prefHeight="166.0" prefWidth="58.0" />
+            <Label layoutX="393.0" layoutY="135.0" text="La liste des versions du signal" />
+         </children>
+      </Pane>
+      <Button fx:id="newServiceBtn" layoutX="519.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleNewService" prefWidth="143.0" text="Ajouter un Service" />
+      <Pane fx:id="serviceEditionPane" disable="true" layoutX="295.0" layoutY="58.0" prefHeight="308.0" prefWidth="551.0">
+         <children>
+            <GridPane layoutX="58.0" layoutY="56.0" prefHeight="188.0" prefWidth="482.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="84.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="10.0" prefWidth="184.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="10.0" prefWidth="33.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="10.0" prefWidth="48.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="10.0" prefWidth="142.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Description" GridPane.rowIndex="1" />
+                  <Label text="Nom" />
+                  <TextArea fx:id="descriptionArea" focusTraversable="false" prefHeight="95.0" prefWidth="166.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+                  <TextField fx:id="nomTxt" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="1" />
+                  <Label text="Version" GridPane.columnIndex="3" />
+                  <TextField fx:id="serviceVersionTxt" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="4" />
+                  <ListView fx:id="serviceVersionsListView" prefHeight="136.0" prefWidth="145.0" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+                  <Label prefHeight="17.0" prefWidth="79.0" text="Les versions" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label layoutX="58.0" layoutY="6.0" text="Edition de Service" />
+            <ButtonBar layoutX="39.0" layoutY="273.0" prefHeight="40.0" prefWidth="250.0">
+               <buttons>
+                  <Button fx:id="enregistrerBtn" mnemonicParsing="false" onAction="#handleSaveService" text="Enregistrer" />
+                  <Button fx:id="supprimerBtn" mnemonicParsing="false" onAction="#handleDeleteService" text="Supprimer" />
+                  <Button mnemonicParsing="false" onAction="#handleServiceEditionAnnuler" text="Annuler" />
+               </buttons>
+            </ButtonBar>
+            <Button fx:id="nouvelleVersionBtn" disable="true" layoutX="389.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleNouvellVersion" prefHeight="25.0" prefWidth="148.0" text="Nouvelle version" />
+            <Button fx:id="chargerVersionBtn" disable="true" layoutX="411.0" layoutY="258.0" mnemonicParsing="false" onAction="#handleChargerVersion" text="Chercger la version" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

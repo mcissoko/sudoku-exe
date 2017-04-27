@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mobilityway.signalmgr.view.RootLayoutController">
+   <children>
+      <TabPane layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="763.0" prefWidth="1300.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+		  <tabs>
+		    <Tab fx:id="signalTab" text="Gestion de Signal">
+		      <content>
+		        <fx:include fx:id="signal" source="SignalLayout.fxml" />
+		      </content>
+		    </Tab>
+		    <Tab fx:id="serviceTab" text="Gestion de Service">
+		      <content>
+		        <fx:include fx:id="service" source="ServiceLayout.fxml" />
+		      </content>
+		    </Tab>
+		    
+		  </tabs>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+	</TabPane>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1300.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeconnexion" text="Deconnexion" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
