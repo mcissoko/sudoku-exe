@@ -46,6 +46,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -106,7 +107,19 @@ public class RootLayoutController implements IMonitor {
 		menuPane.setDisable(false);
 		unrePane.setDisable(false);
 	}
-	
+	@FXML private ToggleButton pauseTgl;
+	private boolean paused;
+	@FXML private void pause() {
+		if(pauseTgl.isSelected()) {
+			pauseTgl.setText("PLAY");
+			this.paused = true;
+			System.out.println("paused");
+		}else {
+			pauseTgl.setText("PAUSE");
+			this.paused = false;
+			System.out.println("activated");
+		}
+	}
 	
 	private void analyseSolution(int status) {
 		
@@ -1085,6 +1098,11 @@ public class RootLayoutController implements IMonitor {
 	public void display(Case caze) {
 		
 		try {
+			System.out.println("display " + caze);
+			while(this.paused) {
+				System.out.println("en pause");
+				Thread.sleep(1000);
+			}
 			Box box = grilleMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
 			if(box != null) {
 				box.getGroupCase().setText(caze.getContent() + "");
@@ -1099,6 +1117,11 @@ public class RootLayoutController implements IMonitor {
 	@Override
 	public void erase(Case caze) {
 		try {
+			System.out.println("erase " + caze);
+			while(this.paused) {
+				System.out.println("en pause");
+				Thread.sleep(1000);
+			}
 			System.out.println(caze);
 			Box box = grilleMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
 			if(box != null) {

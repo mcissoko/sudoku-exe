@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
@@ -20,9 +21,10 @@
    <children>
       <Pane fx:id="cancelPane" layoutX="141.0" layoutY="492.0" prefHeight="153.0" prefWidth="316.0" visible="false">
          <children>
-            <Button cancelButton="true" contentDisplay="CENTER" layoutX="73.0" layoutY="96.0" mnemonicParsing="false" onAction="#cancelResolve" prefHeight="54.0" prefWidth="200.0" style="-fx-background-color: red;" text="Annuler">
+            <ToggleButton fx:id="pauseTgl" layoutX="190.0" layoutY="107.0" mnemonicParsing="false" onAction="#pause" prefWidth="80.0" text="PAUSE" />
+            <Button cancelButton="true" contentDisplay="CENTER" layoutX="73.0" layoutY="107.0" mnemonicParsing="false" onAction="#cancelResolve" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: red;" text="Annuler">
                <font>
-                  <Font name="Arial Bold" size="24.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
                <effect>
                   <Lighting>
