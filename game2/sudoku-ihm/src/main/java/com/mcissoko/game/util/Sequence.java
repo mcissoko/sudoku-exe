@@ -1,7 +1,7 @@
-package com.mcissoko.play.util;
+package com.mcissoko.game.util;
 
-import com.mcissoko.play.sudoku.GroupIndexEnum;
-import com.mcissoko.play.sudoku.PositionIndexEnum;
+import com.mcissoko.game.sudoku.GroupIndexEnum;
+import com.mcissoko.game.sudoku.PositionIndexEnum;
 
 public class Sequence {
 

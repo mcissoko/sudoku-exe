@@ -1,4 +1,4 @@
-package com.mcissoko.play.util;
+package com.mcissoko.game.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

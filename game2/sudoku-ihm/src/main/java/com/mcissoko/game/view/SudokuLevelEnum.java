@@ -1,4 +1,4 @@
-package com.mcissoko.play.view;
+package com.mcissoko.game.view;
 
 import java.util.HashMap;
 import java.util.Map;

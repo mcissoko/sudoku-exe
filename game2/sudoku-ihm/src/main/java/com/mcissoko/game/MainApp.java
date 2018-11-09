@@ -1,10 +1,10 @@
-package com.mcissoko.play;
+package com.mcissoko.game;
 import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mcissoko.play.view.RootLayoutController;
+import com.mcissoko.game.view.RootLayoutController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

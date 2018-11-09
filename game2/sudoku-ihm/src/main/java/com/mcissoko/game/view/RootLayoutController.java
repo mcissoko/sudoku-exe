@@ -1,6 +1,5 @@
-package com.mcissoko.play.view;
+package com.mcissoko.game.view;
 
-import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,22 +12,22 @@ import java.util.function.UnaryOperator;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mcissoko.play.MainApp;
-import com.mcissoko.play.data.Box;
-import com.mcissoko.play.data.IndexBox;
-import com.mcissoko.play.listener.FocusEventListener;
-import com.mcissoko.play.listener.InputChangeListener;
-import com.mcissoko.play.print.MyPrinter;
-import com.mcissoko.play.sudoku.Case;
-import com.mcissoko.play.sudoku.Grille;
-import com.mcissoko.play.sudoku.Group;
-import com.mcissoko.play.sudoku.GroupIndexEnum;
-import com.mcissoko.play.sudoku.IMonitor;
-import com.mcissoko.play.sudoku.PositionIndexEnum;
-import com.mcissoko.play.sudoku.StateCaseEnum;
-import com.mcissoko.play.sudoku.Sudoku;
-import com.mcissoko.play.util.Melodie;
-import com.mcissoko.play.util.Sequence;
+import com.mcissoko.game.MainApp;
+import com.mcissoko.game.data.BoxUi;
+import com.mcissoko.game.data.IndexBox;
+import com.mcissoko.game.listener.FocusEventListener;
+import com.mcissoko.game.listener.InputChangeListener;
+import com.mcissoko.game.print.MyPrinter;
+import com.mcissoko.game.sudoku.Box;
+import com.mcissoko.game.sudoku.Grid;
+import com.mcissoko.game.sudoku.Group;
+import com.mcissoko.game.sudoku.GroupIndexEnum;
+import com.mcissoko.game.sudoku.IMonitor;
+import com.mcissoko.game.sudoku.PositionIndexEnum;
+import com.mcissoko.game.sudoku.StateBoxEnum;
+import com.mcissoko.game.sudoku.Sudoku;
+import com.mcissoko.game.util.Melodie;
+import com.mcissoko.game.util.Sequence;
 
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -59,8 +58,8 @@ public class RootLayoutController implements IMonitor {
 	private Stage primaryStage;
 	
 	private Sudoku sudoku;
-	private Grille solution;
-	private Map<String, Box> grilleMap;
+	private Grid solution;
+	private Map<String, BoxUi> gridMap;
 	
 	private final String focusInOthersStyle  = "-fx-background-color: #a9a6d8;";
 	private final String focusOutStyle = "-fx-background-color: white;";
@@ -81,10 +80,10 @@ public class RootLayoutController implements IMonitor {
 	
 	private boolean writingSolution;
 	
-	private List<Box> boxes;
+	private List<BoxUi> boxes;
 	private Thread thread;	
 
-	private Grille grille;
+	private Grid grille;
 	private MyPrinter myPrinter;
 	
 	protected IMonitor monitor;
@@ -95,7 +94,7 @@ public class RootLayoutController implements IMonitor {
     }
 	
 	private String indexBox(GroupIndexEnum groupIndexEnum, PositionIndexEnum positionIndexEnum) {
-		return "g"+ groupIndexEnum.getIndex() + "Case" + positionIndexEnum.getIndex();
+		return "g"+ groupIndexEnum.getIndex() + "Box" + positionIndexEnum.getIndex();
 	}	
 
 	@FXML private void cancelResolve() {
@@ -135,12 +134,12 @@ public class RootLayoutController implements IMonitor {
 				Group group = this.sudoku.getGrid().getGroup(groupIndexEnum);
 				
 				for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-					Case caze = group.getCase(positionIndexEnum);
-					if(caze.getState() == StateCaseEnum.FIXED){
+					Box caze = group.getBox(positionIndexEnum);
+					if(caze.getState() == StateBoxEnum.FIXED){
 						continue;
 					}
-					Box box = grilleMap.get(indexBox(groupIndexEnum, positionIndexEnum));
-					box.getGroupCase().setText(String.valueOf(group.getCase(positionIndexEnum).getContent()));
+					BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+					box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
 				}
 			}
 			markAsResolved();			
@@ -156,7 +155,7 @@ public class RootLayoutController implements IMonitor {
 		
 		grille = this.sudoku.getGrid();
 		System.out.println(grille);
-		Grille grilleCopy;
+		Grid grilleCopy;
 		
 		grilleCopy = grille.copy();
 		 
@@ -290,13 +289,13 @@ public class RootLayoutController implements IMonitor {
 			return;
 		}
 		Sequence seq = undoSequences.pollFirst();
-		Box b = grilleMap.get(indexBox(seq.getGroupIndex(), seq.getPositionIndex()));
+		BoxUi b = gridMap.get(indexBox(seq.getGroupIndex(), seq.getPositionIndex()));
 		b.setChangeFromUndo(true);
 		Integer content = seq.getOldContent();
 		if(content > 0) {
-			b.getGroupCase().setText(String.valueOf(content));			
+			b.getGroupBox().setText(String.valueOf(content));			
 		} else {
-			b.getGroupCase().setText(StringUtils.EMPTY);
+			b.getGroupBox().setText(StringUtils.EMPTY);
 		}
 		undoBtn.setDisable(undoSequences.isEmpty());
 		
@@ -308,9 +307,9 @@ public class RootLayoutController implements IMonitor {
 		
 		b.setChangeFromUndo(false);
 		
-		b.getGroupCase().setStyle(focusInStyle);
+		b.getGroupBox().setStyle(focusInStyle);
 		
-		b.getGroupCase().requestFocus();			
+		b.getGroupBox().requestFocus();			
 		
 	}
 	
@@ -320,30 +319,30 @@ public class RootLayoutController implements IMonitor {
 			return;
 		}
 		Sequence seq = redoSequences.pollFirst();
-		Box b = grilleMap.get(indexBox(seq.getGroupIndex(), seq.getPositionIndex()));
+		BoxUi b = gridMap.get(indexBox(seq.getGroupIndex(), seq.getPositionIndex()));
 		b.setChangeFromRedo(true);
 		Integer content = seq.getNewContent();
 		if(content > 0) {
-			b.getGroupCase().setText(String.valueOf(content));			
+			b.getGroupBox().setText(String.valueOf(content));			
 		} else {
-			b.getGroupCase().setText(StringUtils.EMPTY);
+			b.getGroupBox().setText(StringUtils.EMPTY);
 		}
 		redoBtn.setDisable(redoSequences.isEmpty());
 		b.setChangeFromRedo(false);
 
-		b.getGroupCase().setStyle(focusInStyle);
+		b.getGroupBox().setStyle(focusInStyle);
 		
-		b.getGroupCase().requestFocus();			
+		b.getGroupBox().requestFocus();			
 	}
 	
 	public void excuteValueChanged(String id, InputActionEnum actionEnum, String value, String old) {
 		if(this.writingSolution) {
 			return;
 		}
-		Box box = grilleMap.get(id);
+		BoxUi box = gridMap.get(id);
 		IndexBox index = box.getIndexBox();
 		Group group = this.sudoku.getGrid().getGroup(box.getIndexBox().getGroupIndexEnum());
-		Case caze = group.getCase(box.getIndexBox().getPositionIndexEnum());
+		Box caze = group.getBox(box.getIndexBox().getPositionIndexEnum());
 				
 		if(!box.isChangeFromUndo() && !box.isChangeFromRedo() && redoBtn.isDisabled() == false) {
 			redoBtn.setDisable(true);
@@ -379,16 +378,16 @@ public class RootLayoutController implements IMonitor {
 			return;
 		}
 		
-		List<Case> occur = new ArrayList<>();
+		List<Box> occur = new ArrayList<>();
 		if(!caze.getGroup().isContentUnique(caze, occur)){
 			
-			for(Case c: occur){
-				box = grilleMap.get(indexBox(c.getGroup().getIndex(), c.getPosition().getIndex()));
+			for(Box c: occur){
+				box = gridMap.get(indexBox(c.getGroup().getIndex(), c.getPosition().getIndex()));
 				occurIndexList.add(new IndexBox(c.getGroup().getIndex(), c.getPosition().getIndex()));
 				if (box.getIndexBox().equals(index)) {
-					box.getGroupCase().setStyle(errorStyle + focusInStyle);
+					box.getGroupBox().setStyle(errorStyle + focusInStyle);
 				}else {
-					box.getGroupCase().setStyle(errorStyle);					
+					box.getGroupBox().setStyle(errorStyle);					
 				}
 					
 				box.setInError(true);
@@ -415,7 +414,7 @@ public class RootLayoutController implements IMonitor {
 			}else{
 				// vérifier si le nombre est resolu
 				/*
-				List<Case> resolved = this.sudoku.getGrid().checkNumberIsResolved(caze.getContent());
+				List<Box> resolved = this.sudoku.getGrid().checkNumberIsResolved(caze.getContent());
 				if(!resolved.isEmpty()){
 					this.markAsResolved(resolved);
 				}
@@ -443,25 +442,27 @@ public class RootLayoutController implements IMonitor {
 		animateBravo();
 	}
 	
-	private String convertDuration(Duration duration) {
-		int nano = duration.getNano();
+	private String convertDuration(long duration) {
+		long secondsInMilli = 1000;
+		long minutesInMilli = secondsInMilli * 60;
+		long hoursInMilli = minutesInMilli * 60;
+		long daysInMilli = hoursInMilli * 24;
+
+		long elapsedDays = duration / daysInMilli;
+		duration = duration % daysInMilli;
 		
-		if(nano < 1000000) {
-			return nano + " ns";
-		}
+		long elapsedHours = duration / hoursInMilli;
+		duration = duration % hoursInMilli;
 		
-		int time = nano / 1000000;// ms
-		int remain = nano % 1000000;
-		if(time < 1000) {
-			return time + " ms " + (remain > 0 ? remain + " ns" : "");
-		}
-		time = time / 1000;
-		remain = time % 1000;
-		if(time < 60) {
-			return time + " s " + (remain > 0 ? remain + " ms" : "");
-		}
+		long elapsedMinutes = duration / minutesInMilli;
+		duration = duration % minutesInMilli;
 		
-		return time + " s";
+		long elapsedSeconds = duration / secondsInMilli;
+		
+		return String.format(
+		    "%d days, %d hours, %d minutes, %d seconds%n", 
+		    elapsedDays,
+		    elapsedHours, elapsedMinutes, elapsedSeconds);
 	}
 
 	private void animateBravo() {
@@ -476,10 +477,10 @@ public class RootLayoutController implements IMonitor {
         fadeTransition.stop();
 	}
 
-//	private void markAsResolved(List<Case> resolved){
-//		for(Case c: resolved){
+//	private void markAsResolved(List<Box> resolved){
+//		for(Box c: resolved){
 //			Box box = grilleMap.get(indexBox(c.getGroup().getIndex(), c.getPosition().getIndex()));
-//			box.getGroupCase().setStyle(resovedStyle);
+//			box.getGroupBox().setStyle(resovedStyle);
 //		}
 //	}
 	
@@ -487,10 +488,10 @@ public class RootLayoutController implements IMonitor {
 		if (occurIndexList.isEmpty()){
 			return;
 		}
-		for(Box b: this.grilleMap.values()){
-			Case c = this.sudoku.getGrid().getGroup(b.getIndexBox().getGroupIndexEnum()).getCase(b.getIndexBox().getPositionIndexEnum());
-			if(c.getState() != StateCaseEnum.FIXED && !occurIndexList.contains(b.getIndexBox())){
-				b.getGroupCase().setDisable(true);
+		for(BoxUi b: this.gridMap.values()){
+			Box c = this.sudoku.getGrid().getGroup(b.getIndexBox().getGroupIndexEnum()).getBox(b.getIndexBox().getPositionIndexEnum());
+			if(c.getState() != StateBoxEnum.FIXED && !occurIndexList.contains(b.getIndexBox())){
+				b.getGroupBox().setDisable(true);
 			}
 			
 		}
@@ -500,41 +501,41 @@ public class RootLayoutController implements IMonitor {
 		if (occurIndexList.isEmpty()){
 			return;
 		}
-		for(Box b: this.grilleMap.values()){
-			Case c = this.sudoku.getGrid().getGroup(b.getIndexBox().getGroupIndexEnum()).getCase(b.getIndexBox().getPositionIndexEnum());
-			if(c.getState() != StateCaseEnum.FIXED && !occurIndexList.contains(b.getIndexBox())){
-				b.getGroupCase().setDisable(false);
+		for(BoxUi b: this.gridMap.values()){
+			Box c = this.sudoku.getGrid().getGroup(b.getIndexBox().getGroupIndexEnum()).getBox(b.getIndexBox().getPositionIndexEnum());
+			if(c.getState() != StateBoxEnum.FIXED && !occurIndexList.contains(b.getIndexBox())){
+				b.getGroupBox().setDisable(false);
 			}
 			
 		}
 		
 		for(IndexBox ib: this.occurIndexList){
-			Box box = grilleMap.get(this.indexBox(ib.getGroupIndexEnum(), ib.getPositionIndexEnum()));
+			BoxUi box = gridMap.get(this.indexBox(ib.getGroupIndexEnum(), ib.getPositionIndexEnum()));
 			box.setInError(false);
-			if(box.getGroupCase().isFocused()) {
-				box.getGroupCase().setStyle(focusInStyle);				
+			if(box.getGroupBox().isFocused()) {
+				box.getGroupBox().setStyle(focusInStyle);				
 			}else {
-				box.getGroupCase().setStyle(focusInOthersStyle);
+				box.getGroupBox().setStyle(focusInOthersStyle);
 			}
 		}
 		
 	}
-	//private Case cazePrev;
+	//private Box cazePrev;
 	
 	public void executeEventEntered(String id){
 		this.setInitiating(false);
 
-		Box box = grilleMap.get(id);
+		BoxUi box = gridMap.get(id);
 		
 		
-		//box.getGroupCase().selectRange(0, 1);
+		//box.getGroupBox().selectRange(0, 1);
 		Group group = sudoku.getGrid().getGroup(box.getIndexBox().getGroupIndexEnum());
-		Case caze = group.getCase(box.getIndexBox().getPositionIndexEnum()); 
+		Box caze = group.getBox(box.getIndexBox().getPositionIndexEnum()); 
 		
-//		boxes.stream().filter(b -> !b.isInError()).forEach(b -> b.getGroupCase().setStyle(focusOutStyle));
-		for(Box b: boxes){
+//		boxes.stream().filter(b -> !b.isInError()).forEach(b -> b.getGroupBox().setStyle(focusOutStyle));
+		for(BoxUi b: boxes){
 			if(! b.isInError()){								
-				b.getGroupCase().setStyle(focusOutStyle);
+				b.getGroupBox().setStyle(focusOutStyle);
 			}			
 			
 		}
@@ -543,9 +544,9 @@ public class RootLayoutController implements IMonitor {
 		/////////////////////////////////////////
 		
 		for(PositionIndexEnum index: PositionIndexEnum.values()){
-			Box b = grilleMap.get(indexBox(group.getIndex(), index));
+			BoxUi b = gridMap.get(indexBox(group.getIndex(), index));
 			if(! b.isInError()){
-				b.getGroupCase().setStyle(focusInOthersStyle);								
+				b.getGroupBox().setStyle(focusInOthersStyle);								
 			}
 			
 			boxes.add(b);
@@ -556,11 +557,11 @@ public class RootLayoutController implements IMonitor {
 		for(GroupIndexEnum gie: group.getGroupLine()){
 			Group g = sudoku.getGrid().getGroup(gie);
 			for(PositionIndexEnum index: PositionIndexEnum.values()){
-				Case c = g.getCase(index);
+				Box c = g.getBox(index);
 				if(caze.getPosition().getCoordinate().getLine() == c.getPosition().getCoordinate().getLine()){
-					Box b = grilleMap.get(indexBox(gie, index));
+					BoxUi b = gridMap.get(indexBox(gie, index));
 					if(! b.isInError()){								
-						b.getGroupCase().setStyle(focusInOthersStyle);	
+						b.getGroupBox().setStyle(focusInOthersStyle);	
 					}
 					
 					boxes.add(b);
@@ -571,11 +572,11 @@ public class RootLayoutController implements IMonitor {
 		for(GroupIndexEnum gie: group.getGroupColumn()){
 			Group g = sudoku.getGrid().getGroup(gie);
 			for(PositionIndexEnum index: PositionIndexEnum.values()){
-				Case c = g.getCase(index);
+				Box c = g.getBox(index);
 				if(caze.getPosition().getCoordinate().getColumn() == c.getPosition().getCoordinate().getColumn()){
-					Box b = grilleMap.get(indexBox(gie, index));
+					BoxUi b = gridMap.get(indexBox(gie, index));
 					if(! b.isInError()){									
-						b.getGroupCase().setStyle(focusInOthersStyle);
+						b.getGroupBox().setStyle(focusInOthersStyle);
 					}				
 					
 					boxes.add(b);
@@ -583,9 +584,9 @@ public class RootLayoutController implements IMonitor {
 			}
 		}
 		if(box.isInError()) {
-			box.getGroupCase().setStyle(focusInStyle + errorStyle);
+			box.getGroupBox().setStyle(focusInStyle + errorStyle);
 		}else {
-			box.getGroupCase().setStyle(focusInStyle);			
+			box.getGroupBox().setStyle(focusInStyle);			
 		}
 	}
 	
@@ -614,10 +615,15 @@ public class RootLayoutController implements IMonitor {
 			this.setInitiating(true);
 			//resolveMenuItem.setDisable(true);
 
-			sudoku.solution(null);
+			sudoku.solution(new IMonitor() {
+				@Override
+				public void erase(Box caze) {}
+				@Override
+				public void display(Box caze) {}
+			});
 			solution = sudoku.getGrid();
 			// sudoku.setGrid(null);
-			Grille grille = Sudoku.createNewEmptyGrid();
+			Grid grille = Sudoku.createNewEmptyGrid();
 
 			Map<Integer, Integer> mapper = (new Melodie(level)).getMapper();
 			// IndexBox index = indexBox();
@@ -633,14 +639,14 @@ public class RootLayoutController implements IMonitor {
 
 				for (PositionIndexEnum positionIndexEnum : posIndexList) {
 
-					Box box = grilleMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+					BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
 					if (limit > 0) {
-						box.getGroupCase().setText(String.valueOf(group.getCase(positionIndexEnum).getContent()));
-						box.getGroupCase().setDisable(true);
+						box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
+						box.getGroupBox().setDisable(true);
 
-						grille.getGroup(groupIndexEnum).fixCase(positionIndexEnum, group.getCase(positionIndexEnum).getContent());
+						grille.getGroup(groupIndexEnum).fixBox(positionIndexEnum, group.getBox(positionIndexEnum).getContent());
 
-						box.getGroupCase().setStyle(fixedStyle);
+						box.getGroupBox().setStyle(fixedStyle);
 						box.setFixed(true);
 					}
 
@@ -661,7 +667,7 @@ public class RootLayoutController implements IMonitor {
 		printJobStatusLabel.setVisible(true);
 		
 		//gridSudoku.setStyle("-fx-background-color: white;");
-		//boxes.forEach(b -> b.getGroupCase().setStyle("-fx-background-color: white;-fx-text-inner-color: red;"));
+		//boxes.forEach(b -> b.getGroupBox().setStyle("-fx-background-color: white;-fx-text-inner-color: red;"));
 			
 		myPrinter.print(gridSudoku);
 		
@@ -680,9 +686,9 @@ public class RootLayoutController implements IMonitor {
 	}
 	
 	@FXML private void erase(){
-		for(Box b: grilleMap.values()) {
-			if(b.isFixed() == false && StringUtils.isNotBlank(b.getGroupCase().getText())) {
-				b.getGroupCase().setText(StringUtils.EMPTY);
+		for(BoxUi b: gridMap.values()) {
+			if(b.isFixed() == false && StringUtils.isNotBlank(b.getGroupBox().getText())) {
+				b.getGroupBox().setText(StringUtils.EMPTY);
 			}
 		}
 		undoSequences.clear();
@@ -731,10 +737,10 @@ public class RootLayoutController implements IMonitor {
 		this.initiating = true;
 		for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
 			for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-				Box box = grilleMap.get(indexBox(groupIndexEnum, positionIndexEnum));
-				box.getGroupCase().setText(StringUtils.EMPTY);
-				box.getGroupCase().setDisable(false);
-				box.getGroupCase().setStyle(focusOutStyle);
+				BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+				box.getGroupBox().setText(StringUtils.EMPTY);
+				box.getGroupBox().setDisable(false);
+				box.getGroupBox().setStyle(focusOutStyle);
 				box.setFixed(false);
 			}
 		}
@@ -751,7 +757,7 @@ public class RootLayoutController implements IMonitor {
 	@SuppressWarnings("unchecked")
 	public void init(){
 		this.monitor = this;
-		this.grilleMap = new HashMap<>();
+		this.gridMap = new HashMap<>();
 		boxes = new ArrayList<>();
 		occurIndexList = new ArrayList<>();
 		undoSequences = new ArrayDeque<>();
@@ -760,107 +766,107 @@ public class RootLayoutController implements IMonitor {
 		myPrinter = new MyPrinter();
 		myPrinter.setPrintJobStatusLabel(printJobStatusLabel);
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_1), new Box(g1Case1, g1Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_2), new Box(g1Case2, g1Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_3), new Box(g1Case3, g1Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_4), new Box(g1Case4, g1Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_5), new Box(g1Case5, g1Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_6), new Box(g1Case6, g1Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_7), new Box(g1Case7, g1Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_8), new Box(g1Case8, g1Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_9), new Box(g1Case9, g1Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_1), new BoxUi(g1Box1, g1Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_2), new BoxUi(g1Box2, g1Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_3), new BoxUi(g1Box3, g1Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_4), new BoxUi(g1Box4, g1Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_5), new BoxUi(g1Box5, g1Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_6), new BoxUi(g1Box6, g1Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_7), new BoxUi(g1Box7, g1Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_8), new BoxUi(g1Box8, g1Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_9), new BoxUi(g1Box9, g1Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_1, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_1), new Box(g2Case1, g2Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_2), new Box(g2Case2, g2Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_3), new Box(g2Case3, g2Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_4), new Box(g2Case4, g2Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_5), new Box(g2Case5, g2Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_6), new Box(g2Case6, g2Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_7), new Box(g2Case7, g2Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_8), new Box(g2Case8, g2Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_9), new Box(g2Case9, g2Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_1), new BoxUi(g2Box1, g2Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_2), new BoxUi(g2Box2, g2Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_3), new BoxUi(g2Box3, g2Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_4), new BoxUi(g2Box4, g2Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_5), new BoxUi(g2Box5, g2Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_6), new BoxUi(g2Box6, g2Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_7), new BoxUi(g2Box7, g2Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_8), new BoxUi(g2Box8, g2Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_9), new BoxUi(g2Box9, g2Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_2, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_1), new Box(g3Case1, g3Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_2), new Box(g3Case2, g3Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_3), new Box(g3Case3, g3Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_4), new Box(g3Case4, g3Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_5), new Box(g3Case5, g3Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_6), new Box(g3Case6, g3Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_7), new Box(g3Case7, g3Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_8), new Box(g3Case8, g3Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_9), new Box(g3Case9, g3Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_1), new BoxUi(g3Box1, g3Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_2), new BoxUi(g3Box2, g3Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_3), new BoxUi(g3Box3, g3Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_4), new BoxUi(g3Box4, g3Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_5), new BoxUi(g3Box5, g3Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_6), new BoxUi(g3Box6, g3Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_7), new BoxUi(g3Box7, g3Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_8), new BoxUi(g3Box8, g3Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_9), new BoxUi(g3Box9, g3Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_3, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_1), new Box(g4Case1, g4Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_2), new Box(g4Case2, g4Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_3), new Box(g4Case3, g4Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_4), new Box(g4Case4, g4Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_5), new Box(g4Case5, g4Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_6), new Box(g4Case6, g4Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_7), new Box(g4Case7, g4Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_8), new Box(g4Case8, g4Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_9), new Box(g4Case9, g4Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_1), new BoxUi(g4Box1, g4Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_2), new BoxUi(g4Box2, g4Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_3), new BoxUi(g4Box3, g4Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_4), new BoxUi(g4Box4, g4Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_5), new BoxUi(g4Box5, g4Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_6), new BoxUi(g4Box6, g4Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_7), new BoxUi(g4Box7, g4Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_8), new BoxUi(g4Box8, g4Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_9), new BoxUi(g4Box9, g4Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_4, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_1), new Box(g5Case1, g5Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_2), new Box(g5Case2, g5Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_3), new Box(g5Case3, g5Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_4), new Box(g5Case4, g5Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_5), new Box(g5Case5, g5Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_6), new Box(g5Case6, g5Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_7), new Box(g5Case7, g5Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_8), new Box(g5Case8, g5Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_9), new Box(g5Case9, g5Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_1), new BoxUi(g5Box1, g5Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_2), new BoxUi(g5Box2, g5Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_3), new BoxUi(g5Box3, g5Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_4), new BoxUi(g5Box4, g5Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_5), new BoxUi(g5Box5, g5Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_6), new BoxUi(g5Box6, g5Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_7), new BoxUi(g5Box7, g5Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_8), new BoxUi(g5Box8, g5Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_9), new BoxUi(g5Box9, g5Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_5, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_1), new Box(g6Case1, g6Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_2), new Box(g6Case2, g6Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_3), new Box(g6Case3, g6Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_4), new Box(g6Case4, g6Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_5), new Box(g6Case5, g6Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_6), new Box(g6Case6, g6Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_7), new Box(g6Case7, g6Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_8), new Box(g6Case8, g6Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_9), new Box(g6Case9, g6Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_1), new BoxUi(g6Box1, g6Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_2), new BoxUi(g6Box2, g6Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_3), new BoxUi(g6Box3, g6Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_4), new BoxUi(g6Box4, g6Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_5), new BoxUi(g6Box5, g6Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_6), new BoxUi(g6Box6, g6Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_7), new BoxUi(g6Box7, g6Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_8), new BoxUi(g6Box8, g6Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_9), new BoxUi(g6Box9, g6Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_6, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_1), new Box(g7Case1, g7Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_2), new Box(g7Case2, g7Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_3), new Box(g7Case3, g7Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_4), new Box(g7Case4, g7Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_5), new Box(g7Case5, g7Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_6), new Box(g7Case6, g7Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_7), new Box(g7Case7, g7Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_8), new Box(g7Case8, g7Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_9), new Box(g7Case9, g7Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_1), new BoxUi(g7Box1, g7Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_2), new BoxUi(g7Box2, g7Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_3), new BoxUi(g7Box3, g7Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_4), new BoxUi(g7Box4, g7Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_5), new BoxUi(g7Box5, g7Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_6), new BoxUi(g7Box6, g7Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_7), new BoxUi(g7Box7, g7Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_8), new BoxUi(g7Box8, g7Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_9), new BoxUi(g7Box9, g7Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_7, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_1), new Box(g8Case1, g8Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_2), new Box(g8Case2, g8Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_3), new Box(g8Case3, g8Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_4), new Box(g8Case4, g8Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_5), new Box(g8Case5, g8Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_6), new Box(g8Case6, g8Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_7), new Box(g8Case7, g8Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_8), new Box(g8Case8, g8Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_9), new Box(g8Case9, g8Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_1), new BoxUi(g8Box1, g8Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_2), new BoxUi(g8Box2, g8Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_3), new BoxUi(g8Box3, g8Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_4), new BoxUi(g8Box4, g8Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_5), new BoxUi(g8Box5, g8Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_6), new BoxUi(g8Box6, g8Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_7), new BoxUi(g8Box7, g8Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_8), new BoxUi(g8Box8, g8Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_9), new BoxUi(g8Box9, g8Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_8, PositionIndexEnum.INDEX_9)));
 		
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_1), new Box(g9Case1, g9Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_1)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_2), new Box(g9Case2, g9Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_2)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_3), new Box(g9Case3, g9Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_3)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_4), new Box(g9Case4, g9Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_4)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_5), new Box(g9Case5, g9Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_5)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_6), new Box(g9Case6, g9Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_6)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_7), new Box(g9Case7, g9Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_7)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_8), new Box(g9Case8, g9Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_8)));
-		grilleMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_9), new Box(g9Case9, g9Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_9)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_1), new BoxUi(g9Box1, g9Candidates1Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_1)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_2), new BoxUi(g9Box2, g9Candidates2Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_2)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_3), new BoxUi(g9Box3, g9Candidates3Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_3)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_4), new BoxUi(g9Box4, g9Candidates4Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_4)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_5), new BoxUi(g9Box5, g9Candidates5Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_5)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_6), new BoxUi(g9Box6, g9Candidates6Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_6)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_7), new BoxUi(g9Box7, g9Candidates7Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_7)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_8), new BoxUi(g9Box8, g9Candidates8Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_8)));
+		gridMap.put(indexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_9), new BoxUi(g9Box9, g9Candidates9Label, new IndexBox(GroupIndexEnum.INDEX_9, PositionIndexEnum.INDEX_9)));
 		
 		FocusEventListener focusListen = new FocusEventListener(this);
 		InputChangeListener inputListen = new InputChangeListener(this);
 		for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
 			for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-				Box box = grilleMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+				BoxUi boxUi = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
 				
-				box.getGroupCase().focusedProperty().addListener(focusListen);
-				box.getGroupCase().setTextFormatter(new TextFormatter<String>(filter));
+				boxUi.getGroupBox().focusedProperty().addListener(focusListen);
+				boxUi.getGroupBox().setTextFormatter(new TextFormatter<String>(filter));
 				
-				box.getGroupCase().textProperty().addListener(inputListen);
-				box.getGroupCase().addEventFilter(KeyEvent.KEY_PRESSED,
+				boxUi.getGroupBox().textProperty().addListener(inputListen);
+				boxUi.getGroupBox().addEventFilter(KeyEvent.KEY_PRESSED,
 		                event -> System.out.println("Pressed: " + event.getText()));
 			}
 		}
@@ -904,175 +910,175 @@ public class RootLayoutController implements IMonitor {
 	@FXML private GridPane gridSudoku;
 	@FXML private Pane choicePane;
 	
-	@FXML private TextField g1Case1;
+	@FXML private TextField g1Box1;
 	@FXML private Label g1Candidates1Label; 
-	@FXML private TextField g1Case2;
+	@FXML private TextField g1Box2;
 	@FXML private Label g1Candidates2Label; 
-	@FXML private TextField g1Case3;
+	@FXML private TextField g1Box3;
 	@FXML private Label g1Candidates3Label; 
-	@FXML private TextField g1Case4;
+	@FXML private TextField g1Box4;
 	@FXML private Label g1Candidates4Label; 
-	@FXML private TextField g1Case5;
+	@FXML private TextField g1Box5;
 	@FXML private Label g1Candidates5Label; 
-	@FXML private TextField g1Case6;
+	@FXML private TextField g1Box6;
 	@FXML private Label g1Candidates6Label; 
-	@FXML private TextField g1Case7;
+	@FXML private TextField g1Box7;
 	@FXML private Label g1Candidates7Label; 
-	@FXML private TextField g1Case8;
+	@FXML private TextField g1Box8;
 	@FXML private Label g1Candidates8Label; 
-	@FXML private TextField g1Case9;
+	@FXML private TextField g1Box9;
 	@FXML private Label g1Candidates9Label; 
 
-	@FXML private TextField g2Case1;
+	@FXML private TextField g2Box1;
 	@FXML private Label g2Candidates1Label; 
-	@FXML private TextField g2Case2;
+	@FXML private TextField g2Box2;
 	@FXML private Label g2Candidates2Label; 
-	@FXML private TextField g2Case3;
+	@FXML private TextField g2Box3;
 	@FXML private Label g2Candidates3Label; 
-	@FXML private TextField g2Case4;
+	@FXML private TextField g2Box4;
 	@FXML private Label g2Candidates4Label; 
-	@FXML private TextField g2Case5;
+	@FXML private TextField g2Box5;
 	@FXML private Label g2Candidates5Label; 
-	@FXML private TextField g2Case6;
+	@FXML private TextField g2Box6;
 	@FXML private Label g2Candidates6Label; 
-	@FXML private TextField g2Case7;
+	@FXML private TextField g2Box7;
 	@FXML private Label g2Candidates7Label; 
-	@FXML private TextField g2Case8;
+	@FXML private TextField g2Box8;
 	@FXML private Label g2Candidates8Label; 
-	@FXML private TextField g2Case9;
+	@FXML private TextField g2Box9;
 	@FXML private Label g2Candidates9Label; 
 	
-	@FXML private TextField g3Case1;
+	@FXML private TextField g3Box1;
 	@FXML private Label g3Candidates1Label; 
-	@FXML private TextField g3Case2;
+	@FXML private TextField g3Box2;
 	@FXML private Label g3Candidates2Label; 
-	@FXML private TextField g3Case3;
+	@FXML private TextField g3Box3;
 	@FXML private Label g3Candidates3Label; 
-	@FXML private TextField g3Case4;
+	@FXML private TextField g3Box4;
 	@FXML private Label g3Candidates4Label; 
-	@FXML private TextField g3Case5;
+	@FXML private TextField g3Box5;
 	@FXML private Label g3Candidates5Label; 
-	@FXML private TextField g3Case6;
+	@FXML private TextField g3Box6;
 	@FXML private Label g3Candidates6Label; 
-	@FXML private TextField g3Case7;
+	@FXML private TextField g3Box7;
 	@FXML private Label g3Candidates7Label; 
-	@FXML private TextField g3Case8;
+	@FXML private TextField g3Box8;
 	@FXML private Label g3Candidates8Label; 
-	@FXML private TextField g3Case9;
+	@FXML private TextField g3Box9;
 	@FXML private Label g3Candidates9Label; 
 	
-	@FXML private TextField g4Case1;
+	@FXML private TextField g4Box1;
 	@FXML private Label g4Candidates1Label; 
-	@FXML private TextField g4Case2;
+	@FXML private TextField g4Box2;
 	@FXML private Label g4Candidates2Label; 
-	@FXML private TextField g4Case3;
+	@FXML private TextField g4Box3;
 	@FXML private Label g4Candidates3Label; 
-	@FXML private TextField g4Case4;
+	@FXML private TextField g4Box4;
 	@FXML private Label g4Candidates4Label; 
-	@FXML private TextField g4Case5;
+	@FXML private TextField g4Box5;
 	@FXML private Label g4Candidates5Label; 
-	@FXML private TextField g4Case6;
+	@FXML private TextField g4Box6;
 	@FXML private Label g4Candidates6Label; 
-	@FXML private TextField g4Case7;
+	@FXML private TextField g4Box7;
 	@FXML private Label g4Candidates7Label; 
-	@FXML private TextField g4Case8;
+	@FXML private TextField g4Box8;
 	@FXML private Label g4Candidates8Label; 
-	@FXML private TextField g4Case9;
+	@FXML private TextField g4Box9;
 	@FXML private Label g4Candidates9Label; 
 	
-	@FXML private TextField g5Case1;
+	@FXML private TextField g5Box1;
 	@FXML private Label g5Candidates1Label; 
-	@FXML private TextField g5Case2;
+	@FXML private TextField g5Box2;
 	@FXML private Label g5Candidates2Label; 
-	@FXML private TextField g5Case3;
+	@FXML private TextField g5Box3;
 	@FXML private Label g5Candidates3Label; 
-	@FXML private TextField g5Case4;
+	@FXML private TextField g5Box4;
 	@FXML private Label g5Candidates4Label; 
-	@FXML private TextField g5Case5;
+	@FXML private TextField g5Box5;
 	@FXML private Label g5Candidates5Label; 
-	@FXML private TextField g5Case6;
+	@FXML private TextField g5Box6;
 	@FXML private Label g5Candidates6Label; 
-	@FXML private TextField g5Case7;
+	@FXML private TextField g5Box7;
 	@FXML private Label g5Candidates7Label; 
-	@FXML private TextField g5Case8;
+	@FXML private TextField g5Box8;
 	@FXML private Label g5Candidates8Label; 
-	@FXML private TextField g5Case9;
+	@FXML private TextField g5Box9;
 	@FXML private Label g5Candidates9Label; 
 	
-	@FXML private TextField g6Case1;
+	@FXML private TextField g6Box1;
 	@FXML private Label g6Candidates1Label; 
-	@FXML private TextField g6Case2;
+	@FXML private TextField g6Box2;
 	@FXML private Label g6Candidates2Label; 
-	@FXML private TextField g6Case3;
+	@FXML private TextField g6Box3;
 	@FXML private Label g6Candidates3Label; 
-	@FXML private TextField g6Case4;
+	@FXML private TextField g6Box4;
 	@FXML private Label g6Candidates4Label; 
-	@FXML private TextField g6Case5;
+	@FXML private TextField g6Box5;
 	@FXML private Label g6Candidates5Label; 
-	@FXML private TextField g6Case6;
+	@FXML private TextField g6Box6;
 	@FXML private Label g6Candidates6Label; 
-	@FXML private TextField g6Case7;
+	@FXML private TextField g6Box7;
 	@FXML private Label g6Candidates7Label; 
-	@FXML private TextField g6Case8;
+	@FXML private TextField g6Box8;
 	@FXML private Label g6Candidates8Label; 
-	@FXML private TextField g6Case9;
+	@FXML private TextField g6Box9;
 	@FXML private Label g6Candidates9Label; 
 	
-	@FXML private TextField g7Case1;
+	@FXML private TextField g7Box1;
 	@FXML private Label g7Candidates1Label; 
-	@FXML private TextField g7Case2;
+	@FXML private TextField g7Box2;
 	@FXML private Label g7Candidates2Label; 
-	@FXML private TextField g7Case3;
+	@FXML private TextField g7Box3;
 	@FXML private Label g7Candidates3Label; 
-	@FXML private TextField g7Case4;
+	@FXML private TextField g7Box4;
 	@FXML private Label g7Candidates4Label; 
-	@FXML private TextField g7Case5;
+	@FXML private TextField g7Box5;
 	@FXML private Label g7Candidates5Label; 
-	@FXML private TextField g7Case6;
+	@FXML private TextField g7Box6;
 	@FXML private Label g7Candidates6Label; 
-	@FXML private TextField g7Case7;
+	@FXML private TextField g7Box7;
 	@FXML private Label g7Candidates7Label; 
-	@FXML private TextField g7Case8;
+	@FXML private TextField g7Box8;
 	@FXML private Label g7Candidates8Label; 
-	@FXML private TextField g7Case9;
+	@FXML private TextField g7Box9;
 	@FXML private Label g7Candidates9Label; 
 	
-	@FXML private TextField g8Case1;
+	@FXML private TextField g8Box1;
 	@FXML private Label g8Candidates1Label; 
-	@FXML private TextField g8Case2;
+	@FXML private TextField g8Box2;
 	@FXML private Label g8Candidates2Label; 
-	@FXML private TextField g8Case3;
+	@FXML private TextField g8Box3;
 	@FXML private Label g8Candidates3Label; 
-	@FXML private TextField g8Case4;
+	@FXML private TextField g8Box4;
 	@FXML private Label g8Candidates4Label; 
-	@FXML private TextField g8Case5;
+	@FXML private TextField g8Box5;
 	@FXML private Label g8Candidates5Label; 
-	@FXML private TextField g8Case6;
+	@FXML private TextField g8Box6;
 	@FXML private Label g8Candidates6Label; 
-	@FXML private TextField g8Case7;
+	@FXML private TextField g8Box7;
 	@FXML private Label g8Candidates7Label; 
-	@FXML private TextField g8Case8;
+	@FXML private TextField g8Box8;
 	@FXML private Label g8Candidates8Label; 
-	@FXML private TextField g8Case9;
+	@FXML private TextField g8Box9;
 	@FXML private Label g8Candidates9Label; 
 	
-	@FXML private TextField g9Case1;
+	@FXML private TextField g9Box1;
 	@FXML private Label g9Candidates1Label; 
-	@FXML private TextField g9Case2;
+	@FXML private TextField g9Box2;
 	@FXML private Label g9Candidates2Label; 
-	@FXML private TextField g9Case3;
+	@FXML private TextField g9Box3;
 	@FXML private Label g9Candidates3Label; 
-	@FXML private TextField g9Case4;
+	@FXML private TextField g9Box4;
 	@FXML private Label g9Candidates4Label; 
-	@FXML private TextField g9Case5;
+	@FXML private TextField g9Box5;
 	@FXML private Label g9Candidates5Label; 
-	@FXML private TextField g9Case6;
+	@FXML private TextField g9Box6;
 	@FXML private Label g9Candidates6Label; 
-	@FXML private TextField g9Case7;
+	@FXML private TextField g9Box7;
 	@FXML private Label g9Candidates7Label; 
-	@FXML private TextField g9Case8;
+	@FXML private TextField g9Box8;
 	@FXML private Label g9Candidates8Label; 
-	@FXML private TextField g9Case9;
+	@FXML private TextField g9Box9;
 	@FXML private Label g9Candidates9Label; 
 	/*
 	//*/
@@ -1095,7 +1101,7 @@ public class RootLayoutController implements IMonitor {
 	}
 
 	@Override
-	public void display(Case caze) {
+	public void display(Box caze) {
 		
 		try {
 			System.out.println("display " + caze);
@@ -1103,9 +1109,9 @@ public class RootLayoutController implements IMonitor {
 				System.out.println("en pause");
 				Thread.sleep(1000);
 			}
-			Box box = grilleMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
+			BoxUi box = gridMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
 			if(box != null) {
-				box.getGroupCase().setText(caze.getContent() + "");
+				box.getGroupBox().setText(caze.getContent() + "");
 			}
 			Thread.sleep(1000);
 		} catch (Exception e) {
@@ -1115,7 +1121,7 @@ public class RootLayoutController implements IMonitor {
 	}
 
 	@Override
-	public void erase(Case caze) {
+	public void erase(Box caze) {
 		try {
 			System.out.println("erase " + caze);
 			while(this.paused) {
@@ -1123,9 +1129,9 @@ public class RootLayoutController implements IMonitor {
 				Thread.sleep(1000);
 			}
 			System.out.println(caze);
-			Box box = grilleMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
+			BoxUi box = gridMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
 			if(box != null) {
-				box.getGroupCase().setText("");
+				box.getGroupBox().setText("");
 			}
 			Thread.sleep(1000);
 		} catch (Exception e) {

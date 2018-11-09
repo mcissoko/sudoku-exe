@@ -1,12 +1,12 @@
-package com.mcissoko.play.data;
+package com.mcissoko.game.data;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class Box {
+public class BoxUi {
 
 	
-	private TextField groupCase;
+	private TextField groupBox;
 	private Label groupCandidatesLabel;
 	private IndexBox indexBox;
 	private boolean inError;
@@ -14,9 +14,9 @@ public class Box {
 	private boolean changeFromUndo;
 	private boolean changeFromRedo;
 	
-	public Box(TextField groupCase, Label groupCandidatesLabel, IndexBox indexBox) {
+	public BoxUi(TextField groupBox, Label groupCandidatesLabel, IndexBox indexBox) {
 		super();
-		this.groupCase = groupCase;
+		this.groupBox = groupBox;
 		this.groupCandidatesLabel = groupCandidatesLabel;
 		this.indexBox = indexBox;
 		this.inError = false;
@@ -24,11 +24,11 @@ public class Box {
 		this.changeFromUndo = false;
 		this.changeFromUndo = false;
 	}
-	public TextField getGroupCase() {
-		return groupCase;
+	public TextField getGroupBox() {
+		return groupBox;
 	}
-	public void setGroupCase(TextField groupCase) {
-		this.groupCase = groupCase;
+	public void setGroupBox(TextField groupBox) {
+		this.groupBox = groupBox;
 	}
 	public Label getGroupCandidatesLabel() {
 		return groupCandidatesLabel;

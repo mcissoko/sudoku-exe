@@ -1,4 +1,4 @@
-package com.mcissoko.play;
+package com.mcissoko.game;
 
 
 import javafx.application.Application;

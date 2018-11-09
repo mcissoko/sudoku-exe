@@ -1,4 +1,4 @@
-package com.mcissoko.play.view;
+package com.mcissoko.game.view;
 
 public enum InputActionEnum {
 

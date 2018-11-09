@@ -1,6 +1,6 @@
-package com.mcissoko.play.listener;
+package com.mcissoko.game.listener;
 
-import com.mcissoko.play.view.RootLayoutController;
+import com.mcissoko.game.view.RootLayoutController;
 
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.value.ChangeListener;

@@ -1,9 +1,9 @@
-package com.mcissoko.play.exception;
+package com.mcissoko.game.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mcissoko.play.util.Util;
+import com.mcissoko.game.util.Util;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;

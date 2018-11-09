@@ -1,7 +1,7 @@
-package com.mcissoko.play.listener;
+package com.mcissoko.game.listener;
 
-import com.mcissoko.play.view.InputActionEnum;
-import com.mcissoko.play.view.RootLayoutController;
+import com.mcissoko.game.view.InputActionEnum;
+import com.mcissoko.game.view.RootLayoutController;
 
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;

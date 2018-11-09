@@ -1,6 +1,6 @@
-package com.mcissoko.play.listener;
+package com.mcissoko.game.listener;
 
-import com.mcissoko.play.view.RootLayoutController;
+import com.mcissoko.game.view.RootLayoutController;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;

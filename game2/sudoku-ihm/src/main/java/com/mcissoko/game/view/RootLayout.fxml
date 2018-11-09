@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="597.0" prefWidth="600.0" styleClass="root" stylesheets="@../../../../../resources/com/mcissoko/play/styles/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mcissoko.play.view.RootLayoutController">
+<AnchorPane prefHeight="597.0" prefWidth="600.0" styleClass="root" stylesheets="@../../../../../resources/com/mcissoko/game/styles/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mcissoko.game.view.RootLayoutController">
    <children>
       <Pane fx:id="cancelPane" layoutX="141.0" layoutY="492.0" prefHeight="153.0" prefWidth="316.0" visible="false">
          <children>
@@ -74,47 +74,47 @@
                         <Label fx:id="g1Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g1Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g1Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g1Case1" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g1Box1" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g1Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g1Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g1Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g1Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g1Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g1Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g1Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g1Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g1Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -142,47 +142,47 @@
                         <Label fx:id="g4Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g4Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g4Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g4Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g4Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g4Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g4Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g4Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g4Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g4Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g4Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g4Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g4Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g4Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -210,47 +210,47 @@
                         <Label fx:id="g7Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g7Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g7Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g7Case1" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g7Box1" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g7Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g7Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g7Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g7Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g7Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g7Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g7Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g7Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g7Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -278,47 +278,47 @@
                         <Label fx:id="g2Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g2Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g2Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g2Case1" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g2Box1" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g2Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g2Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g2Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g2Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g2Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g2Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g2Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g2Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g2Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -346,48 +346,48 @@
                         <Label fx:id="g3Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g3Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g3Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g3Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g3Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g3Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g3Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g3Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g3Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g3Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g3Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g3Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g3Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
                      </children>
-                        <TextField fx:id="g3Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g3Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -414,47 +414,47 @@
                         <Label fx:id="g5Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g5Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g5Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g5Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g5Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g5Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g5Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g5Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g5Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g5Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g5Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g5Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g5Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g5Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -482,47 +482,47 @@
                         <Label fx:id="g6Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g6Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g6Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g6Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g6Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g6Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g6Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g6Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g6Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g6Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g6Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g6Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g6Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g6Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -550,47 +550,47 @@
                         <Label fx:id="g8Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g8Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g8Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g8Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g8Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g8Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g8Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g8Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g8Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g8Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g8Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g8Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g8Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g8Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -618,47 +618,47 @@
                         <Label fx:id="g9Candidates7Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.rowIndex="2" />
                         <Label fx:id="g9Candidates8Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="g9Candidates9Label" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" text="Label" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <TextField fx:id="g9Case1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
+                        <TextField fx:id="g9Box1" alignment="CENTER" maxHeight="59.0" maxWidth="63.0" minHeight="25.0" minWidth="25.0" prefHeight="59.0" prefWidth="59.0">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
+                        <TextField fx:id="g9Box2" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
+                        <TextField fx:id="g9Box3" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
+                        <TextField fx:id="g9Box4" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="g9Box5" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <TextField fx:id="g9Box6" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
+                        <TextField fx:id="g9Box7" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="g9Box8" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="g9Case9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <TextField fx:id="g9Box9" alignment="CENTER" maxHeight="59.0" maxWidth="59.0" minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="59.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font size="26.0" />
                            </font>

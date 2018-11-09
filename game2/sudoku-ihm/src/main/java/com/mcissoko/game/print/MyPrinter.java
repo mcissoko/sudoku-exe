@@ -1,4 +1,4 @@
-package com.mcissoko.play.print;
+package com.mcissoko.game.print;
 
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;

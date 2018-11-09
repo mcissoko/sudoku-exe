@@ -1,9 +1,9 @@
-package com.mcissoko.play.util;
+package com.mcissoko.game.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mcissoko.play.view.SudokuLevelEnum;
+import com.mcissoko.game.view.SudokuLevelEnum;
 
 public class Melodie {
 
