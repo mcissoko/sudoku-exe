@@ -1,10 +1,10 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 import java.io.Serializable;
 /**
  * Immutable Object
  * 
- * @author Doudou
+ * @author Cissoko
  *
  */
 public class Position implements Serializable {

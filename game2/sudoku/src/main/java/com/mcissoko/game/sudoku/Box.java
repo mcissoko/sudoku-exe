@@ -1,30 +1,29 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
-public class Case implements Serializable{
+public class Box extends AbstractBox implements Serializable {
 
 	private static final long serialVersionUID = -3308228191662064132L;
 	
 	private Position position;
-	private StateCaseEnum state;
-	private List<Integer> candidates;
 	private Integer content;
 	private Group group;
-	
-	private List<Integer> triedCandidates;
-	
+		
 	private final Random randomizer;
-	protected Case(Position position, Group group) {
+	
+	protected Box(Position position, Group group) {
 		super();
 		this.position = position;
-		this.state = StateCaseEnum.EMPTY;
-		candidates = new ArrayList<>();
-		triedCandidates = new ArrayList<>();
+		this.state = StateBoxEnum.EMPTY;
+		candidates = new HashSet<>();
+		triedCandidates = new HashSet<>();
 		
 		IntStream.rangeClosed(1, 9).forEach(i -> candidates.add(i));
 		
@@ -37,11 +36,11 @@ public class Case implements Serializable{
 		return candidates.size();
 	}
 	
-	protected void setCandidates(List<Integer> candidates) {
-		if(this.state == StateCaseEnum.FIXED){
+	protected void setCandidates(Set<Integer> candidates) {
+		if(this.state == StateBoxEnum.FIXED){
 			return;
 		}
-		this.candidates = new ArrayList<>(candidates);
+		this.candidates = new HashSet<>(candidates);
 	}
 
 	private Integer oneCandidate(){
@@ -61,7 +60,7 @@ public class Case implements Serializable{
 	
 	public void fix(Integer value){
 		this.content = value;
-		this.state = StateCaseEnum.FIXED;
+		this.state = StateBoxEnum.FIXED;
 		this.candidates.clear();
 		this.group.removeCandidate(this);
 		this.group.removeCandidateInGroupColumn(this);
@@ -92,11 +91,11 @@ public class Case implements Serializable{
 		candidates.remove(candidate);
 	}
 	
-	protected List<Integer> getCandidates() {
+	protected Set<Integer> getCandidates() {
 		return candidates;
 	}
 
-	protected StateCaseEnum getEtat() {
+	protected StateBoxEnum getEtat() {
 		return state;
 	}
 	
@@ -105,15 +104,15 @@ public class Case implements Serializable{
 		return group;
 	}
 	
-	protected List<Integer> getTriedCandidates() {
+	protected Set<Integer> getTriedCandidates() {
 		return triedCandidates;
 	}
 
-	protected void setState(StateCaseEnum state) {
+	protected void setState(StateBoxEnum state) {
 		this.state = state;
 	}
 	
-	public StateCaseEnum getState() {
+	public StateBoxEnum getState() {
 		return state;
 	}
 
@@ -123,7 +122,7 @@ public class Case implements Serializable{
 
 	public void fillContent(Integer content) {
 		this.content = content;
-		this.state = StateCaseEnum.FILLED;
+		this.state = StateBoxEnum.FILLED;
 		
 		if(!this.triedCandidates.contains(content)){
 			this.triedCandidates.add(content);
@@ -133,15 +132,15 @@ public class Case implements Serializable{
 	
 	public void tryContent(Integer content) {
 		this.content = content;
-		this.state = StateCaseEnum.FILLED;
+		this.state = StateBoxEnum.FILLED;
 	}
 	
 	public void resetContent() {
-		if(this.state == StateCaseEnum.FIXED){
+		if(this.state == StateBoxEnum.FIXED){
 			return;
 		}
 		this.content =  0;
-		this.state = StateCaseEnum.EMPTY;
+		this.state = StateBoxEnum.EMPTY;
 	}
 
 	public Position getPosition() {
@@ -149,7 +148,7 @@ public class Case implements Serializable{
 	}
 	
 	public String print(){
-		if(this.state == StateCaseEnum.EMPTY){
+		if(this.state == StateBoxEnum.EMPTY){
 			return "( ) ";
 		}
 		return "(" +this.content+ ") ";
@@ -176,7 +175,7 @@ public class Case implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Case other = (Case) obj;
+		Box other = (Box) obj;
 		if (position == null) {
 			if (other.position != null)
 				return false;
@@ -186,7 +185,7 @@ public class Case implements Serializable{
 	}
 
 	public void restaureCandidate(Integer sellectedCandidate) {
-		if(this.state == StateCaseEnum.FIXED || candidates.contains(sellectedCandidate)){
+		if(this.state == StateBoxEnum.FIXED || candidates.contains(sellectedCandidate)){
 			return;
 		}
 		candidates.add(sellectedCandidate);

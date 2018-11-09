@@ -1,4 +1,4 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 class Sequence {
 	private GroupIndexEnum groupIndex;

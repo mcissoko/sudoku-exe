@@ -1,7 +1,6 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,38 +11,38 @@ import org.slf4j.LoggerFactory;
 public class Sudoku {
 	Logger log = LoggerFactory.getLogger(Sudoku.class);  
 
-	private Grille grid;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
-	private Duration duration;
+	private Grid grid;
+	private Date startDate;
+	private Date endDate;
+	private long duration;
 		
 	public Sudoku() {
-		grid = new Grille();
+		grid = new Grid();
 	}
 	
-	public Sudoku(Grille grid) {
+	public Sudoku(Grid grid) {
 		super();
 		this.grid = grid;
 	}
 	
 	public int solution(IMonitor monitor){
 		int result;
+		this.startDate = new Date();
 		if((result = resolve(monitor)) >= 0) {
-			this.duration = Duration.between(endDate, startDate);
+			this.duration = endDate.getTime() - startDate.getTime();
 			log.info("Start date: {}", startDate);
-			log.info("End date: {}", endDate);
+			log.info("End date:   {}", endDate);
 			log.info("Durée: {}", duration);
 		}else {
-			this.duration = null;			
+			this.duration = 0;			
 		}
 		return result;
 	}
 
 	public int resolve(IMonitor monitor){
 		try {
-			this.startDate = LocalDateTime.now();
 			if(!this.grid.isValid()) {
-				endDate = LocalDateTime.now();
+				endDate = new Date();
 				// pas de solution possible
 				log.warn("Pas de solution possible pour cette grille\n{}", this.grid);
 				return 3;
@@ -51,7 +50,7 @@ public class Sudoku {
 			
 			//Date t1 = new Date();
 			Map<Integer, Object> result = new HashMap<>();
-			Case candidate = grid.random();
+			Box candidate = grid.random();
 			log.info("Case depart: " + candidate);
 			boolean gridFilled;
 			result.put(1, candidate );
@@ -68,11 +67,11 @@ public class Sudoku {
 						result = group.checkCandidate(result);
 						gridFilled = gridFilled & (boolean) result.get(0);
 					}	
-					candidate = (Case) result.get(1);
+					candidate = (Box) result.get(1);
 				}
 				
 				if(gridFilled){
-					this.endDate = LocalDateTime.now();
+					this.endDate = new Date();
 					if(grid.isSudoku()){
 						log.info("\n {}", grid);
 						log.info("resolu");
@@ -83,7 +82,7 @@ public class Sudoku {
 					log.info("Echec");
 					return 1;
 				}else{
-					if(candidate.getState() == StateCaseEnum.FILLED || candidate.getState() == StateCaseEnum.FIXED){
+					if(candidate.getState() == StateBoxEnum.FILLED || candidate.getState() == StateBoxEnum.FIXED){
 						seach = true;
 						continue;
 					}	
@@ -96,16 +95,16 @@ public class Sudoku {
 					log.info("\n {}", grid);
 					candidate = grid.restaure();
 					if(candidate == null){
-						this.endDate = LocalDateTime.now();
+						this.endDate = new Date();
 						log.info("Echec");
 						log.info("Taille de la sequence", grid.getPlaySequence().size());
 						return 2;
 					}
 					seach = false;
 					gridFilled = false;
-					if(monitor != null) {
-						monitor.erase(candidate);						
-					}
+					
+					monitor.erase(candidate);						
+					
 					continue;
 				}
 				
@@ -113,9 +112,8 @@ public class Sudoku {
 				
 				grid.addPlaySequence(playSequence); 
 				
-				if(monitor != null) {
-					monitor.display(candidate);
-				}
+				monitor.display(candidate);
+				
 				
 				seach = true;
 				gridFilled = false;
@@ -127,19 +125,19 @@ public class Sudoku {
 		return -2;
 	}
 	
-	public Grille getGrid() {
+	public Grid getGrid() {
 		return grid;
 	}
 
-	public void setGrid(Grille grid) {
+	public void setGrid(Grid grid) {
 		this.grid = grid;
 	}
 	
-	public static Grille createNewEmptyGrid() {
-		return new Grille();
+	public static Grid createNewEmptyGrid() {
+		return new Grid();
 	}
 
-	public Duration getDuration() {
+	public long getDuration() {
 		return duration;
 	}
 	

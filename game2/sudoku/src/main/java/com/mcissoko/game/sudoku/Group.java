@@ -1,4 +1,4 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -13,14 +13,14 @@ public class Group implements Serializable{
 
 	private static final long serialVersionUID = 3330283792812169026L;
 	private final GroupIndexEnum index;
-	private Map<PositionIndexEnum, Case> cases;
+	private Map<PositionIndexEnum, Box> boxes;
 	
 	private GroupIndexEnum[] groupLine;
 	private GroupIndexEnum[] groupColumn;
 	
-	private Grille grid;
+	private Grid grid;
 		
-	protected Group(GroupIndexEnum groupIndex, Grille grid) {
+	protected Group(GroupIndexEnum groupIndex, Grid grid) {
 		this.index = groupIndex;
 		this.init();
 		this.grid = grid;
@@ -28,10 +28,10 @@ public class Group implements Serializable{
 	}
 
 	private void init(){
-		cases = new HashMap<>();
+		boxes = new HashMap<>();
 		
 		for(PositionIndexEnum position: PositionIndexEnum.values()){
-			cases.put(position, new Case(new Position(index, position), this));
+			boxes.put(position, new Box(new Position(index, position), this));
 		}		
 		initGroupLine();
 		initGroupColumn();
@@ -138,18 +138,18 @@ public class Group implements Serializable{
 	 * @param content
 	 * @return
 	 */
-	protected boolean isContentUniqueInGroup(Case box, List<Case> occurrences) {
+	protected boolean isContentUniqueInGroup(Box box, List<Box> occurrences) {
 		int content = box.getContent();
 		int occurrenceCount = 0;
-		for(Case caze : cases.values()){
-			if (caze.sizeOfCandidate() == 1 && caze.getState() == StateCaseEnum.EMPTY){
-				if(caze.getCandidates().get(0).equals(content)){
+		for(Box b : boxes.values()){
+			if (b.sizeOfCandidate() == 1 && b.getState() == StateBoxEnum.EMPTY){
+				if(b.getCandidates().iterator().next().equals(content)){
 					occurrenceCount++;
 				}
 			}else{
-				if (caze.getContent().equals(content)) {
+				if (b.getContent().equals(content)) {
 					if(occurrences != null){
-						occurrences.add(caze);
+						occurrences.add(b);
 					}
 					occurrenceCount++;
 				}				
@@ -159,15 +159,15 @@ public class Group implements Serializable{
 		return occurrenceCount == 1;
 	}
 	
-	public boolean isContentUnique(Case caze, List<Case> occurrences) {
+	public boolean isContentUnique(Box box, List<Box> occurrences) {
 		
-		return isContentUniqueInGroup(caze, occurrences) && this.grid.isNumberInGrilleLine(caze, occurrences) && this.grid.isNumberInGrilleColumn(caze, occurrences);
+		return isContentUniqueInGroup(box, occurrences) && this.grid.isNumberInGrilleLine(box, occurrences) && this.grid.isNumberInGrilleColumn(box, occurrences);
 	}
 	
 	protected boolean notExist(int content) {
 		
-		for(Case caze : cases.values()){
-			if (caze.getContent() == content) {
+		for(Box box : boxes.values()){
+			if (box.getContent() == content) {
 				return false;
 			}
 		}
@@ -176,21 +176,21 @@ public class Group implements Serializable{
 	}
 
 
-	protected boolean isNumberInGroupLine(Case caze, List<Case> occurrences) {
-		int valeur = caze.getContent();
-		int ligne = caze.getPosition().getCoordinate().getLine();
+	protected boolean isNumberInGroupLine(Box box, List<Box> occurrences) {
+		int valeur = box.getContent();
+		int ligne = box.getPosition().getCoordinate().getLine();
 		
-		for(Case box : cases.values()){
+		for(Box b : boxes.values()){
 		
-			if(box.getPosition().getCoordinate().getLine() == ligne){
-				if (box.sizeOfCandidate() == 1 && box.getState() == StateCaseEnum.EMPTY){
-					if(box.getCandidates().get(0).equals(valeur)){
+			if(b.getPosition().getCoordinate().getLine() == ligne){
+				if (b.sizeOfCandidate() == 1 && b.getState() == StateBoxEnum.EMPTY){
+					if(b.getCandidates().iterator().next().equals(valeur)){
 						return true;
 					}
 				}else{
-					if(box.getContent().equals(valeur)){
+					if(b.getContent().equals(valeur)){
 						if(occurrences != null){
-							occurrences.add(box);
+							occurrences.add(b);
 						}
 						return true;					
 					}
@@ -199,46 +199,46 @@ public class Group implements Serializable{
 		}
 		return false;
 	}
-	protected void removeCandidateInGroupLine(Case filled, PlaySequence playSequence) {
+	protected void removeCandidateInGroupLine(Box filled, PlaySequence playSequence) {
 		int line = filled.getPosition().getCoordinate().getLine();
-		for(Case caze : cases.values()){
-			if(caze.getPosition().getCoordinate().getLine() == line){
-				if(caze.hasCandidate(filled.getContent())){
-					caze.removeCandidate(filled.getContent(), playSequence);
+		for(Box box : boxes.values()){
+			if(box.getPosition().getCoordinate().getLine() == line){
+				if(box.hasCandidate(filled.getContent())){
+					box.removeCandidate(filled.getContent(), playSequence);
 				}
 			}
 		}
 	}
 	
-	protected void removeCandidateInGroupLine(Case filled) {
+	protected void removeCandidateInGroupLine(Box filled) {
 		int line = filled.getPosition().getCoordinate().getLine();
 		for (GroupIndexEnum gi : this.groupLine) {
 			Group group = this.grid.getGroup(gi);
-			for (Case caze : group.getCases().values()) {
-				if (caze.getPosition().getCoordinate().getLine() == line) {
-					if (caze.hasCandidate(filled.getContent())) {
-						caze.removeCandidate(filled.getContent());
+			for (Box box : group.getBoxes().values()) {
+				if (box.getPosition().getCoordinate().getLine() == line) {
+					if (box.hasCandidate(filled.getContent())) {
+						box.removeCandidate(filled.getContent());
 					}
 				}
 			}
 		}
 	}
 	
-	protected boolean isNumberInGroupColumn(Case caze, List<Case> occurrences) {
-		int valeur = caze.getContent();
-		int colonne = caze.getPosition().getCoordinate().getColumn();
+	protected boolean isNumberInGroupColumn(Box box, List<Box> occurrences) {
+		int valeur = box.getContent();
+		int colonne = box.getPosition().getCoordinate().getColumn();
 		
-		for(Case box : cases.values()){
+		for(Box b : boxes.values()){
 			
-			if(box.getPosition().getCoordinate().getColumn() == colonne){
-				if (box.sizeOfCandidate() == 1 && box.getState() == StateCaseEnum.EMPTY){
-					if(box.getCandidates().get(0).equals(valeur)){
+			if(b.getPosition().getCoordinate().getColumn() == colonne){
+				if (b.sizeOfCandidate() == 1 && b.getState() == StateBoxEnum.EMPTY){
+					if(b.getCandidates().iterator().next().equals(valeur)){
 						return true;
 					}
 				}else{ 
-					if(box.getContent().equals(valeur)){
+					if(b.getContent().equals(valeur)){
 						if(occurrences != null){
-							occurrences.add(box);
+							occurrences.add(b);
 						}
 						return true;					 
 					}
@@ -248,32 +248,32 @@ public class Group implements Serializable{
 		return false;
 	}
 	
-	protected void removeCandidate(Case filled) {
-		cases.values().forEach(c -> c.getCandidates().remove(filled.getContent()));
+	protected void removeCandidate(Box filled) {
+		boxes.values().forEach(c -> c.getCandidates().remove(filled.getContent()));
 	}
 	
-	protected void removeCandidateInGroupColumn(Case filled, PlaySequence playSequence) {
+	protected void removeCandidateInGroupColumn(Box filled, PlaySequence playSequence) {
 		int column = filled.getPosition().getCoordinate().getColumn();
-		for(Case caze : cases.values()){
-			if(caze.getPosition().getCoordinate().getColumn() == column){
+		for(Box box : boxes.values()){
+			if(box.getPosition().getCoordinate().getColumn() == column){
 
-				if(caze.hasCandidate(filled.getContent())){
-					caze.removeCandidate(filled.getContent(), playSequence);
+				if(box.hasCandidate(filled.getContent())){
+					box.removeCandidate(filled.getContent(), playSequence);
 				}
 			}
 		}
 		
 	}
 	
-	protected void removeCandidateInGroupColumn(Case filled) {
+	protected void removeCandidateInGroupColumn(Box filled) {
 		int column = filled.getPosition().getCoordinate().getColumn();
 		for(GroupIndexEnum gi: this.groupColumn) {
 			Group group = this.grid.getGroup(gi);
-			for(Case caze : group.getCases().values()){
-				if(caze.getPosition().getCoordinate().getColumn() == column){
+			for(Box box : group.getBoxes().values()){
+				if(box.getPosition().getCoordinate().getColumn() == column){
 
-					if(caze.hasCandidate(filled.getContent())){
-						caze.removeCandidate(filled.getContent());
+					if(box.hasCandidate(filled.getContent())){
+						box.removeCandidate(filled.getContent());
 					}
 				}
 			}
@@ -283,14 +283,14 @@ public class Group implements Serializable{
 	
 	public boolean isValid() {
 		
-		List<Case> empty = cases.values().parallelStream().filter(c -> c.getState() == StateCaseEnum.EMPTY).collect(Collectors.toList());
+		List<Box> empty = boxes.values().parallelStream().filter(c -> c.getState() == StateBoxEnum.EMPTY).collect(Collectors.toList());
 		if(!empty.isEmpty()) {			
-			List<Integer> filledList = cases.values().parallelStream().filter(c -> c.getState() != StateCaseEnum.EMPTY).map(Case::getContent).collect(Collectors.toList()); 
+			List<Integer> filledList = boxes.values().parallelStream().filter(c -> c.getState() != StateBoxEnum.EMPTY).map(Box::getContent).collect(Collectors.toList()); 
 			List<Integer> toFill = IntStream.rangeClosed(1, 9).boxed().filter(i -> !filledList.contains(i)).collect(Collectors.toList()); 
 			for(Integer i: toFill) {
 				boolean found = false;
-				for(Case caze: empty) {
-					if(caze.getCandidates().contains(i)) {
+				for(Box box: empty) {
+					if(box.getCandidates().contains(i)) {
 						found = true;
 					}
 				}
@@ -303,14 +303,14 @@ public class Group implements Serializable{
 		return true;
 		
 		/*
-		//List<Case> empty = cases.values().parallelStream().filter(c -> c.getState() == StateCaseEnum.EMPTY).collect(Collectors.toList());
+		//List<Box> empty = cases.values().parallelStream().filter(c -> c.getState() == StateBoxEnum.EMPTY).collect(Collectors.toList());
 		List<Integer> filledList = cases.values().parallelStream()
-				.filter(c -> c.getState() != StateCaseEnum.EMPTY)
-				.map(Case::getContent).collect(Collectors.toList()); 
+				.filter(c -> c.getState() != StateBoxEnum.EMPTY)
+				.map(Box::getContent).collect(Collectors.toList()); 
 		
 		Set<Integer> candidates = cases.values().parallelStream()
-				.filter(c -> c.getState() == StateCaseEnum.EMPTY)
-				.map(Case::getCandidates).collect(HashSet::new, Set::addAll, Set::addAll);
+				.filter(c -> c.getState() == StateBoxEnum.EMPTY)
+				.map(Box::getCandidates).collect(HashSet::new, Set::addAll, Set::addAll);
 		boolean possible = IntStream.rangeClosed(1, 9).boxed().filter(i -> !filledList.contains(i)).filter(j -> !candidates.contains(j)).count() <= 0;
 		if(!possible) {
 			return false;
@@ -330,9 +330,9 @@ public class Group implements Serializable{
 	 */
 	public boolean isSudoku(){
 		
-		for(Case caze : cases.values()){
-			int content = caze.getContent();
-			if (content > 0 && isContentUnique(caze, null)) {
+		for(Box box : boxes.values()){
+			int content = box.getContent();
+			if (content > 0 && isContentUnique(box, null)) {
 				continue;
 			}else{
 				return false;
@@ -342,17 +342,17 @@ public class Group implements Serializable{
 		return true;
 	}
 	
-	protected void removeCandidate(Case filled, PlaySequence playSequence){
+	protected void removeCandidate(Box filled, PlaySequence playSequence){
 		PositionIndexEnum index = filled.getPosition().getIndex();
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-			Case caze = cases.get(positionIndexEnum);
+			Box box = boxes.get(positionIndexEnum);
 			
-			if (index == caze.getPosition().getIndex()) {
+			if (index == box.getPosition().getIndex()) {
 				continue;
 			}
 			
-			if(caze.hasCandidate(filled.getContent())){
-				caze.removeCandidate(filled.getContent(), playSequence);
+			if(box.hasCandidate(filled.getContent())){
+				box.removeCandidate(filled.getContent(), playSequence);
 			}
 		}
 		Stream.of(groupLine).forEach(line -> grid.getGroup(line).removeCandidateInGroupLine(filled, playSequence));
@@ -360,19 +360,19 @@ public class Group implements Serializable{
 	}
 	
 	protected void resetContent(){
-		for(Case caze : cases.values()){
-			caze.resetContent();
+		for(Box box : boxes.values()){
+			box.resetContent();
 		}
 	}
 	
 	
-	public Group fillCase(PositionIndexEnum positionIndex, int content){
-		cases.get(positionIndex).fillContent(content);
+	public Group fillBox(PositionIndexEnum positionIndex, int content){
+		boxes.get(positionIndex).fillContent(content);
 		return this;
 	}
 	
-	public Group fixCase(PositionIndexEnum positionIndex, int content){
-		cases.get(positionIndex).fix(content);
+	public Group fixBox(PositionIndexEnum positionIndex, int content){
+		boxes.get(positionIndex).fix(content);
 		return this;
 	}
 	
@@ -388,26 +388,26 @@ public class Group implements Serializable{
 		return index;
 	}
 
-	protected Map<PositionIndexEnum, Case> getCases() {
-		return cases;
+	protected Map<PositionIndexEnum, Box> getBoxes() {
+		return boxes;
 	}
-	public  Case getCase(PositionIndexEnum index) {
-		return cases.get(index);
+	public  Box getBox(PositionIndexEnum index) {
+		return boxes.get(index);
 	}
 	protected Map<Integer, Object> checkCandidate(Map<Integer, Object> result){
-		Case candidate = (Case) result.get(1);
+		Box candidate = (Box) result.get(1);
 		boolean gridFilled = true;
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-			Case caze = cases.get(positionIndexEnum);
+			Box box = boxes.get(positionIndexEnum);
 			
-			if(caze.getState() == StateCaseEnum.FILLED || caze.getState() == StateCaseEnum.FIXED){
+			if(box.getState() == StateBoxEnum.FILLED || box.getState() == StateBoxEnum.FIXED){
 				gridFilled = gridFilled & true;
 				continue;
 			}
-			if((candidate.getState() == StateCaseEnum.FILLED || candidate.getState() == StateCaseEnum.FIXED) || (caze.sizeOfCandidate() < candidate.sizeOfCandidate())){
-				candidate = caze;
+			if((candidate.getState() == StateBoxEnum.FILLED || candidate.getState() == StateBoxEnum.FIXED) || (box.sizeOfCandidate() < candidate.sizeOfCandidate())){
+				candidate = box;
 			}
-			gridFilled = gridFilled & (caze.sizeOfCandidate() == 0);
+			gridFilled = gridFilled & (box.sizeOfCandidate() == 0);
 		}
 		result.put(0, gridFilled);
 		result.put(1, candidate);
@@ -423,7 +423,7 @@ public class Group implements Serializable{
 		while (endPosition <= 9) {
 			
 			for (int i = startPosition; i <= endPosition; i++) {
-				sb.append(cases.get(PositionIndexEnum.fromIndex(i)).toString());
+				sb.append(boxes.get(PositionIndexEnum.fromIndex(i)).toString());
 			}
 			sb.append("\n");
 			startPosition = startPosition + 3;
@@ -433,23 +433,23 @@ public class Group implements Serializable{
 		return sb.toString();
 	}
 	
-	protected Case random() {
+	protected Box random() {
 		Random randomizer = new Random();		
 		
-		int i = randomizer.nextInt(cases.size());
+		int i = randomizer.nextInt(boxes.size());
 		PositionIndexEnum index = PositionIndexEnum.fromIndex(i);
-		Case caze = cases.get(index);
+		Box box = boxes.get(index);
 		
-		return caze;
+		return box;
 	}
 
-	protected Case isNumberExists(Integer content) {
+	protected Box isNumberExists(Integer content) {
 		if(content == null){
 			return null;
 		}
-		for(Case caze : cases.values()){
-			if(content.equals(caze.getContent())){
-				return caze;
+		for(Box box : boxes.values()){
+			if(content.equals(box.getContent())){
+				return box;
 			}
 		}
 		return null;

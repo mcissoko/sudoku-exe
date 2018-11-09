@@ -1,10 +1,5 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -17,15 +12,15 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Grille implements Serializable{
+public class Grid implements Serializable{
 
-	Logger log = LoggerFactory.getLogger(Grille.class);  
+	Logger log = LoggerFactory.getLogger(Grid.class);  
 
 	private static final long serialVersionUID = 4581943640090887910L;
 	private Map<GroupIndexEnum, Group> groups;
 	private Deque<PlaySequence> playSequence;
 	
-	Grille() {
+	Grid() {
 		initGroups();
 	}
 	
@@ -37,15 +32,15 @@ public class Grille implements Serializable{
 		}
 	}
 	
-	protected Case random(){
+	protected Box random(){
 		
 		Random randomizer = new Random();
 		
 		int i = randomizer.nextInt(groups.size());
 		GroupIndexEnum index = GroupIndexEnum.fromIndex(i);
 		Group group = groups.get(index);
-		Case caze = group.random();
-		return caze;
+		Box box = group.random();
+		return box;
 	}
 	
 	protected void addPlaySequence(PlaySequence playSequence){
@@ -64,14 +59,14 @@ public class Grille implements Serializable{
 		return playSequence;
 	}
 
-	protected boolean isNumberInGrilleLine(Case caze, List<Case> occurrences) {
+	protected boolean isNumberInGrilleLine(Box box, List<Box> occurrences) {
 		
-		Group group = groups.get(caze.getPosition().getGroupIndex());
+		Group group = groups.get(box.getPosition().getGroupIndex());
 		
 		GroupIndexEnum[] indexVoisinsLigne = group.getGroupLine();
 		
-		boolean resultatLigne2 = getGroup(indexVoisinsLigne[0]).isNumberInGroupLine(caze, occurrences);
-		boolean resultatLigne3 = getGroup(indexVoisinsLigne[1]).isNumberInGroupLine(caze, occurrences);
+		boolean resultatLigne2 = getGroup(indexVoisinsLigne[0]).isNumberInGroupLine(box, occurrences);
+		boolean resultatLigne3 = getGroup(indexVoisinsLigne[1]).isNumberInGroupLine(box, occurrences);
 		
 		boolean ok = !resultatLigne2 && !resultatLigne3; 
 		if(!ok){
@@ -81,14 +76,14 @@ public class Grille implements Serializable{
 	}
 	
 	
-	protected boolean isNumberInGrilleColumn(Case caze, List<Case> occurrences) {
+	protected boolean isNumberInGrilleColumn(Box box, List<Box> occurrences) {
 
-		Group group = groups.get(caze.getPosition().getGroupIndex());
+		Group group = groups.get(box.getPosition().getGroupIndex());
 
 		GroupIndexEnum[] indexVoisinsColonne = group.getGroupColumn();
 
-		boolean resultatColonne1 = getGroup(indexVoisinsColonne[0]).isNumberInGroupColumn(caze, occurrences);
-		boolean resultatColonne2 = getGroup(indexVoisinsColonne[1]).isNumberInGroupColumn(caze, occurrences);
+		boolean resultatColonne1 = getGroup(indexVoisinsColonne[0]).isNumberInGroupColumn(box, occurrences);
+		boolean resultatColonne2 = getGroup(indexVoisinsColonne[1]).isNumberInGroupColumn(box, occurrences);
 
 		boolean ok = !resultatColonne1 && !resultatColonne2;
 		if (!ok) {
@@ -146,7 +141,7 @@ public class Grille implements Serializable{
 					for (int i = startGroup; i <= endGroup; i++) {
 						Group g = this.getGroup(GroupIndexEnum.fromIndex(i));
 						for (int k = startPosition; k <= endPosition; k++) {
-							sb.append(g.getCases().get(PositionIndexEnum.fromIndex(k)).print());
+							sb.append(g.getBoxes().get(PositionIndexEnum.fromIndex(k)).print());
 						}
 						sb.append("+ ");
 					}
@@ -165,54 +160,54 @@ public class Grille implements Serializable{
 		return sb.toString();
 	}
 
-	protected Case restaure() {
+	protected Box restaure() {
 		PlaySequence last = getLastPlaySequence();
 		if(last == null){
 			return null;
 		}
 		Group group = getGroup(last.getGroupIndex());
-		Case caze = group.getCase(last.getPositionIndex());
+		Box box = group.getBox(last.getPositionIndex());
 		
-		caze.resetContent();
-		caze.setCandidates(last.getCandidates());
+		box.resetContent();
+		box.setCandidates(last.getCandidates());
 		for(Sequence seq: last.getSequences()){
 			Group g = getGroup(seq.getGroupIndex());
-			g.getCase(seq.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
+			g.getBox(seq.getPositionIndex()).restaureCandidate(last.getSellectedCandidate());
 		}
 		
-		if(caze.getCandidates().size() == 1){
-			log.info("Un seul candidat disponible: {}, on remonte d'un cran", caze);
+		if(box.getCandidates().size() == 1){
+			log.info("Un seul candidat disponible: {}, on remonte d'un cran", box);
 
-			caze.resetTried();
+			box.resetTried();
 			return this.restaure();
 		}
 		
-		return caze;
+		return box;
 	}
 
-	public List<Case> checkNumberIsResolved(Integer content) {
-		List<Case> lst = new ArrayList<>();
+	public List<Box> checkNumberIsResolved(Integer content) {
+		List<Box> lst = new ArrayList<>();
 		for(Group group: this.groups.values()){
-			Case caze = group.isNumberExists(content);
-			if(caze == null){
+			Box box = group.isNumberExists(content);
+			if(box == null){
 				return new ArrayList<>();
 			}
-			lst.add(caze);
+			lst.add(box);
 		}
 		
 		return lst;
 	}
 	
-	public Grille copy() {
+	public Grid copy() {
 
-		Grille copy = new Grille();
+		Grid copy = new Grid();
 		for (GroupIndexEnum groupIndexEnum : GroupIndexEnum.values()) {
 			Group group = copy.getGroup(groupIndexEnum);
 
 			for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
-				Case caze = this.getGroup(groupIndexEnum).getCase(positionIndexEnum);
-				if (caze.getState() != StateCaseEnum.EMPTY) {
-					group.fixCase(positionIndexEnum, caze.getContent());
+				Box box = this.getGroup(groupIndexEnum).getBox(positionIndexEnum);
+				if (box.getState() != StateBoxEnum.EMPTY) {
+					group.fixBox(positionIndexEnum, box.getContent());
 				}
 
 			}

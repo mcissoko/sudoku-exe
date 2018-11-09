@@ -1,13 +1,13 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
-public enum StateCaseEnum {
+public enum StateBoxEnum {
 
-	EMPTY(0, "Libre"), FILLED(1, "Ocuppée"), FIXED(-1, "Resolu");
+	EMPTY(0, "Free"), FILLED(1, "Filled"), FIXED(-1, "Resolved");
 	
 	private int id;
 	private String label;
 	
-	private StateCaseEnum(int id, String label){
+	private StateBoxEnum(int id, String label){
 		this.id = id;
 		this.label = label;
 	}

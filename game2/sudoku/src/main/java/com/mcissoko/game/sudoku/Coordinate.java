@@ -1,11 +1,11 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 import java.io.Serializable;
 
 /**
  * Immutable object 
  * 
- * @author Doudou
+ * @author Cissoko
  *
  *	Premiere position = (1,1)
  */

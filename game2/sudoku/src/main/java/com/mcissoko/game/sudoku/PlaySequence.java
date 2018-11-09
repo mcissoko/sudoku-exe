@@ -1,24 +1,26 @@
-package com.mcissoko.play.sudoku;
+package com.mcissoko.game.sudoku;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class PlaySequence {
 
 	private GroupIndexEnum groupIndex;
 	private  PositionIndexEnum positionIndex;
 	private Integer sellectedCandidate;
-	private List<Integer> candidates;
+	private Set<Integer> candidates;
 	
 	private List<Sequence> sequences;
 
-	PlaySequence(GroupIndexEnum groupIndex, PositionIndexEnum positionIndex, Integer sellectedCandidate, List<Integer> candidates) {
+	PlaySequence(GroupIndexEnum groupIndex, PositionIndexEnum positionIndex, Integer sellectedCandidate, Set<Integer> candidates) {
 		super();
 		this.groupIndex = groupIndex;
 		this.positionIndex = positionIndex;
 		this.sellectedCandidate = sellectedCandidate;
 		
-		this.candidates = new ArrayList<>(candidates);
+		this.candidates = new HashSet<>(candidates);
 		
 		this.sequences = new ArrayList<>();
 		
@@ -50,7 +52,7 @@ class PlaySequence {
 		return sellectedCandidate;
 	}
 
-	protected List<Integer> getCandidates() {
+	protected Set<Integer> getCandidates() {
 		return candidates;
 	}
 	
