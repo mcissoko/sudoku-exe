@@ -245,7 +245,18 @@ public class RootLayoutController implements IMonitor {
 	}
 
 	@FXML private void resolveCurrent() {
-		resolve(null);
+		resolve(new IMonitor() {
+			
+			@Override
+			public void erase(Box caze) {
+				
+			}
+			
+			@Override
+			public void display(Box caze) {
+				
+			}
+		});
 	}
 	
 	

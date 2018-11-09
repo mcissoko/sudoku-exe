@@ -394,8 +394,8 @@ public class Group implements Serializable{
 	public  Box getBox(PositionIndexEnum index) {
 		return boxes.get(index);
 	}
-	protected Map<Integer, Object> checkCandidate(Map<Integer, Object> result){
-		Box candidate = (Box) result.get(1);
+	protected ResultMapper checkCandidate(ResultMapper result){
+		Box candidate = result.getCandidate();
 		boolean gridFilled = true;
 		for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
 			Box box = boxes.get(positionIndexEnum);
@@ -409,8 +409,8 @@ public class Group implements Serializable{
 			}
 			gridFilled = gridFilled & (box.sizeOfCandidate() == 0);
 		}
-		result.put(0, gridFilled);
-		result.put(1, candidate);
+		result.setCandidate(candidate);
+		result.setGridFilled(gridFilled);
 		return result;
 	}
 

@@ -20,7 +20,10 @@ public class Grid implements Serializable{
 	private Map<GroupIndexEnum, Group> groups;
 	private Deque<PlaySequence> playSequence;
 	
+	private boolean filled;
+	
 	Grid() {
+		this.filled = false;
 		initGroups();
 	}
 	
@@ -215,6 +218,15 @@ public class Grid implements Serializable{
 		return copy;
 
 	}
+
+	public boolean isFilled() {
+		return filled;
+	}
+
+	public void setFilled(boolean filled) {
+		this.filled = filled;
+	}
+	
 	
 	
 }

@@ -49,25 +49,23 @@ public class Sudoku {
 			}
 			
 			//Date t1 = new Date();
-			Map<Integer, Object> result = new HashMap<>();
 			Box candidate = grid.random();
 			log.info("Case depart: " + candidate);
 			boolean gridFilled;
-			result.put(1, candidate );
 			gridFilled = false;
 			boolean seach = true;
-			
+			ResultMapper result = new ResultMapper(gridFilled, candidate);
 			while(!gridFilled){
 				
-				result.put(0, gridFilled);
+				result.setGridFilled(gridFilled);
 				if(seach){
 					gridFilled = true;
 					for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
 						Group group = grid.getGroup(groupIndexEnum);
 						result = group.checkCandidate(result);
-						gridFilled = gridFilled & (boolean) result.get(0);
+						gridFilled = gridFilled & result.isGridFilled();
 					}	
-					candidate = (Box) result.get(1);
+					candidate = result.getCandidate();
 				}
 				
 				if(gridFilled){
