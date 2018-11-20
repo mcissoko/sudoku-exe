@@ -1,15 +1,15 @@
-package com.mcissoko.game.util;
+package com.mcissoko.game.sudoku.client.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mcissoko.game.view.SudokuLevelEnum;
+import com.mcissoko.game.sudoku.client.enumeration.SudokuLevelEnum;
 
-public class Melodie {
+public class LevelMapper {
 
 	private Map<Integer, Integer> mapper;
 
-	public Melodie(SudokuLevelEnum level) {
+	public LevelMapper(SudokuLevelEnum level) {
 		mapper = new HashMap<>();
 		switch (level) {
 		case EASY:

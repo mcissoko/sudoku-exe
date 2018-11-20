@@ -1,4 +1,4 @@
-package com.mcissoko.game.util;
+package com.mcissoko.game.sudoku.client.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

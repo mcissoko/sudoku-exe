@@ -2,8 +2,6 @@ package com.mcissoko.game.view;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -14,20 +12,22 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mcissoko.game.MainApp;
 import com.mcissoko.game.data.BoxUi;
-import com.mcissoko.game.data.IndexBox;
 import com.mcissoko.game.listener.FocusEventListener;
 import com.mcissoko.game.listener.InputChangeListener;
 import com.mcissoko.game.print.MyPrinter;
-import com.mcissoko.game.sudoku.Box;
-import com.mcissoko.game.sudoku.Grid;
-import com.mcissoko.game.sudoku.Group;
-import com.mcissoko.game.sudoku.GroupIndexEnum;
-import com.mcissoko.game.sudoku.IMonitor;
-import com.mcissoko.game.sudoku.PositionIndexEnum;
-import com.mcissoko.game.sudoku.StateBoxEnum;
-import com.mcissoko.game.sudoku.Sudoku;
-import com.mcissoko.game.util.Melodie;
-import com.mcissoko.game.util.Sequence;
+import com.mcissoko.game.sudoku.client.enumeration.InputActionEnum;
+import com.mcissoko.game.sudoku.client.enumeration.SudokuLevelEnum;
+import com.mcissoko.game.sudoku.core.Box;
+import com.mcissoko.game.sudoku.core.Grid;
+import com.mcissoko.game.sudoku.core.Group;
+import com.mcissoko.game.sudoku.core.GroupIndexEnum;
+import com.mcissoko.game.sudoku.core.IMonitor;
+import com.mcissoko.game.sudoku.core.IPromise;
+import com.mcissoko.game.sudoku.core.IndexBox;
+import com.mcissoko.game.sudoku.core.PositionIndexEnum;
+import com.mcissoko.game.sudoku.core.Sequence;
+import com.mcissoko.game.sudoku.core.StateBoxEnum;
+import com.mcissoko.game.sudoku.core.Sudoku;
 
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -120,30 +120,23 @@ public class RootLayoutController implements IMonitor {
 		}
 	}
 	
-	private void analyseSolution(int status) {
-		
-		
-		if(status != 0) {
-			this.sudoku.setGrid(grille);	
-			showMessage(AlertType.ERROR, "Statut de la resolution",  status + ": Pas de solution");
-			
-		}else {
-			
-			this.writingSolution = true;
-			for(GroupIndexEnum groupIndexEnum: GroupIndexEnum.values()){
-				Group group = this.sudoku.getGrid().getGroup(groupIndexEnum);
-				
-				for(PositionIndexEnum positionIndexEnum: PositionIndexEnum.values()){
-					Box caze = group.getBox(positionIndexEnum);
-					if(caze.getState() == StateBoxEnum.FIXED){
-						continue;
-					}
-					BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
-					box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
+	private void doSolved(Grid grid) {
+
+		this.writingSolution = true;
+		for (GroupIndexEnum groupIndexEnum : GroupIndexEnum.values()) {
+			Group group = grid.getGroup(groupIndexEnum);
+
+			for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
+				Box caze = group.getBox(positionIndexEnum);
+				if (caze.getState() == StateBoxEnum.FIXED) {
+					continue;
 				}
+				BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+				box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
 			}
-			markAsResolved();			
 		}
+		markAsResolved();
+
 		this.writingSolution = false;
 	}
 	
@@ -168,79 +161,20 @@ public class RootLayoutController implements IMonitor {
 		cancelPane.toFront();
 		cancelPane.setVisible(true);
 		
-//		service = new Service<Void>() {
-//	        @Override
-//	        protected Task<Void> createTask() {
-//	            return new Task<Void>() {           
-//	                @Override
-//	                protected Void call() throws Exception {
-//	                    //Background work                       
-//	                    final CountDownLatch latch = new CountDownLatch(1);
-//	                    Platform.runLater(new Runnable() {                          
-//	                        @Override
-//	                        public void run() {
-//	                            try{
-//	                            	int status = sudoku.process();
-//	            					
-//	            					cancelPane.toBack();
-//	            					cancelPane.setVisible(false);
-//	            					menuPane.setDisable(false);
-//	            					unrePane.setDisable(false);
-//	            					
-//	            					analyseSolution(status, grille);
-//	                            }finally{
-//	                                latch.countDown();
-//	                            }
-//	                        }
-//	                    });
-//	                    latch.await();                      
-//	                    //Keep with the background work
-//	                    return null;
-//	                }
-//	            };
-//	        }
-//	    };
-	    //service.start();
-//		Platform.runLater(new Runnable() {
-//			   @Override
-//			   public void run() {
-//					int status = sudoku.process();
-//					
-//					
-//					cancelPane.toBack();
-//					cancelPane.setVisible(false);
-//					menuPane.setDisable(false);
-//					unrePane.setDisable(false);
-//					
-//					analyseSolution(status, grille);
-//					
-//				}
-//			});
-		this.thread = new Thread(new Runnable() {
-			
-
-			@Override
-			public void run() {
-				final int status = sudoku.solution(mon);
-				Platform.runLater(new Runnable() {
-					   @Override
-					   public void run() {
-						   cancelPane.toBack();
-							cancelPane.setVisible(false);
-							menuPane.setDisable(false);
-							unrePane.setDisable(false);
-							
-							analyseSolution(status);
-							
-						}
-					});
-				
-				
-			}
-		});
-		thread.setDaemon(true);
-
-		thread.start();
+		
+		sudoku.resolve(mon)
+		.done(grid -> {
+					
+					 cancelPane.toBack();
+						cancelPane.setVisible(false);
+						menuPane.setDisable(false);
+						unrePane.setDisable(false);
+						
+						doSolved(grid);
+				});
+		
+		
+		
 		
 	}
 
@@ -623,54 +557,37 @@ public class RootLayoutController implements IMonitor {
 			System.out.println(level);
 		} else {
 
-			this.setInitiating(true);
 			//resolveMenuItem.setDisable(true);
+			IPromise promise = sudoku.newGrid(level);
+			promise.done(done -> {
+				sudoku.init();
+				Grid grid = sudoku.getGrid();
+				this.setInitiating(true);
+				for (GroupIndexEnum groupIndexEnum : GroupIndexEnum.values()) {
+					Group group = done.getGroup(groupIndexEnum);
 
-			sudoku.solution(new IMonitor() {
-				@Override
-				public void erase(Box caze) {}
-				@Override
-				public void display(Box caze) {}
-			});
-			solution = sudoku.getGrid();
-			// sudoku.setGrid(null);
-			Grid grille = Sudoku.createNewEmptyGrid();
+					for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
+						Box box = group.getBox(positionIndexEnum);
+						if (box.getState() == StateBoxEnum.FIXED) {
+							BoxUi boxUi = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
 
-			Map<Integer, Integer> mapper = (new Melodie(level)).getMapper();
-			// IndexBox index = indexBox();
-			List<GroupIndexEnum> groupIndexList = Arrays.asList(GroupIndexEnum.values());
-			Collections.shuffle(groupIndexList);
-			int i = 1;
-			for (GroupIndexEnum groupIndexEnum : groupIndexList) {
-				Group group = solution.getGroup(groupIndexEnum);
-				// index.setGroupIndexEnum(groupIndexEnum);
-				List<PositionIndexEnum> posIndexList = Arrays.asList(PositionIndexEnum.values());
-				Collections.shuffle(posIndexList);
-				int limit = mapper.get(i);
+							grid.getGroup(groupIndexEnum).fixBox(positionIndexEnum, group.getBox(positionIndexEnum).getContent());
 
-				for (PositionIndexEnum positionIndexEnum : posIndexList) {
+							boxUi.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
+							boxUi.getGroupBox().setDisable(true);
+							boxUi.getGroupBox().setStyle(fixedStyle);
+							boxUi.setFixed(true);
+						}
 
-					BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
-					if (limit > 0) {
-						box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
-						box.getGroupBox().setDisable(true);
-
-						grille.getGroup(groupIndexEnum).fixBox(positionIndexEnum, group.getBox(positionIndexEnum).getContent());
-
-						box.getGroupBox().setStyle(fixedStyle);
-						box.setFixed(true);
 					}
-
-					limit--;
 				}
-				i++;
-			}
+				this.setInitiating(false);
+				resolveMenuItem.setDisable(false);
+				resolveMenuItem2.setDisable(false);
 
-			sudoku.setGrid(grille);
+			});
 
-			this.setInitiating(false);
-			resolveMenuItem.setDisable(false);
-			resolveMenuItem2.setDisable(false);
+
 		}
 	}
 	

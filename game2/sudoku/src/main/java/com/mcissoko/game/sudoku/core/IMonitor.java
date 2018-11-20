@@ -1,4 +1,4 @@
-package com.mcissoko.game.sudoku;
+package com.mcissoko.game.sudoku.core;
 
 public interface IMonitor {
 	void display(Box caze);

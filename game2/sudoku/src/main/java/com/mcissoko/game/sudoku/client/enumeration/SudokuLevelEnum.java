@@ -1,4 +1,4 @@
-package com.mcissoko.game.view;
+package com.mcissoko.game.sudoku.client.enumeration;
 
 import java.util.HashMap;
 import java.util.Map;

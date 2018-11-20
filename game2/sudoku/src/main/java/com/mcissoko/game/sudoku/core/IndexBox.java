@@ -1,7 +1,4 @@
-package com.mcissoko.game.data;
-
-import com.mcissoko.game.sudoku.GroupIndexEnum;
-import com.mcissoko.game.sudoku.PositionIndexEnum;
+package com.mcissoko.game.sudoku.core;
 
 public class IndexBox {
 

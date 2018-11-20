@@ -1,4 +1,4 @@
-package com.mcissoko.game.sudoku;
+package com.mcissoko.game.sudoku.core;
 
 public enum GroupIndexEnum {
 

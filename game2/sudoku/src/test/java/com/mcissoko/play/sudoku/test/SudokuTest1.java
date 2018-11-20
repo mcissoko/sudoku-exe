@@ -6,11 +6,11 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 
-import com.mcissoko.game.sudoku.Grid;
-import com.mcissoko.game.sudoku.Group;
-import com.mcissoko.game.sudoku.GroupIndexEnum;
-import com.mcissoko.game.sudoku.PositionIndexEnum;
-import com.mcissoko.game.sudoku.Sudoku;
+import com.mcissoko.game.sudoku.core.Grid;
+import com.mcissoko.game.sudoku.core.Group;
+import com.mcissoko.game.sudoku.core.GroupIndexEnum;
+import com.mcissoko.game.sudoku.core.PositionIndexEnum;
+import com.mcissoko.game.sudoku.core.Sudoku;
 
 public class SudokuTest1 {
 
@@ -23,7 +23,7 @@ public class SudokuTest1 {
 		while(result == 0){
 			System.out.println("============== start ===============");
 			Sudoku sudoku = new Sudoku();
-			result = sudoku.solution(null);
+//			result = sudoku.solution(null);
 			try {
 				Thread.sleep(000);
 			} catch (InterruptedException e) {
@@ -66,7 +66,7 @@ public class SudokuTest1 {
 	
 	public static void test1(){
 	//*
-		Grid grille = Sudoku.createNewEmptyGrid();
+		Grid grille = null;//Sudoku.createNewEmptyGrid();
 		Group g1 = grille.getGroup(GroupIndexEnum.INDEX_1)
 		.fillBox(PositionIndexEnum.INDEX_1, 5)
 		.fillBox(PositionIndexEnum.INDEX_2, 3)

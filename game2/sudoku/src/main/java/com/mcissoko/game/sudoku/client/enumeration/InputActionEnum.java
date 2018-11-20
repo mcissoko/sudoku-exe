@@ -1,4 +1,4 @@
-package com.mcissoko.game.view;
+package com.mcissoko.game.sudoku.client.enumeration;
 
 public enum InputActionEnum {
 

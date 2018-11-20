@@ -1,5 +1,7 @@
 package com.mcissoko.game.data;
 
+import com.mcissoko.game.sudoku.core.IndexBox;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 

@@ -1,4 +1,4 @@
-package com.mcissoko.game.sudoku;
+package com.mcissoko.game.sudoku.core;
 
 import java.util.ArrayList;
 import java.util.HashSet;
