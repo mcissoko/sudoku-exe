@@ -12,6 +12,9 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
+import com.mcissoko.game.sudoku.core.enumeration.StateBoxEnum;
+
 public class Grid implements Serializable{
 
 	Logger log = LoggerFactory.getLogger(Grid.class);  

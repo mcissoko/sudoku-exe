@@ -1,6 +1,6 @@
 package com.mcissoko.game.listener;
 
-import com.mcissoko.game.sudoku.client.enumeration.InputActionEnum;
+import com.mcissoko.game.sudoku.core.enumeration.InputActionEnum;
 import com.mcissoko.game.view.RootLayoutController;
 
 import javafx.beans.property.StringProperty;

@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
+import com.mcissoko.game.sudoku.core.enumeration.StateBoxEnum;
+
 public class Group implements Serializable{
 
 	private static final long serialVersionUID = 3330283792812169026L;

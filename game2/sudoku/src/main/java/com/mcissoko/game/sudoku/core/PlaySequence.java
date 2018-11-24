@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
+
 class PlaySequence {
 
 	private GroupIndexEnum groupIndex;

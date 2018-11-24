@@ -8,32 +8,17 @@ import java.util.Random;
 
 import com.mcissoko.game.sudoku.core.Grid;
 import com.mcissoko.game.sudoku.core.Group;
-import com.mcissoko.game.sudoku.core.GroupIndexEnum;
 import com.mcissoko.game.sudoku.core.PositionIndexEnum;
-import com.mcissoko.game.sudoku.core.Sudoku;
+import com.mcissoko.game.sudoku.core.SudokuImpl;
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
 
 public class SudokuTest1 {
 
 	public static void main(String[] args) {
-		test4();
+		test3();
 	}
 	
-	public static void test4(){
-		int result = 0;
-		while(result == 0){
-			System.out.println("============== start ===============");
-			Sudoku sudoku = new Sudoku();
-//			result = sudoku.solution(null);
-			try {
-				Thread.sleep(000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("============== end ===============");
-		}
-		System.err.println(result);
-	}
+	
 	public static void test3(){
 		Deque<String> queue = new ArrayDeque<>();
 		queue.addFirst("Un");

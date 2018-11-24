@@ -15,19 +15,20 @@ import com.mcissoko.game.data.BoxUi;
 import com.mcissoko.game.listener.FocusEventListener;
 import com.mcissoko.game.listener.InputChangeListener;
 import com.mcissoko.game.print.MyPrinter;
-import com.mcissoko.game.sudoku.client.enumeration.InputActionEnum;
-import com.mcissoko.game.sudoku.client.enumeration.SudokuLevelEnum;
+import com.mcissoko.game.sudoku.client.Sudoku;
 import com.mcissoko.game.sudoku.core.Box;
 import com.mcissoko.game.sudoku.core.Grid;
 import com.mcissoko.game.sudoku.core.Group;
-import com.mcissoko.game.sudoku.core.GroupIndexEnum;
 import com.mcissoko.game.sudoku.core.IMonitor;
 import com.mcissoko.game.sudoku.core.IPromise;
 import com.mcissoko.game.sudoku.core.IndexBox;
 import com.mcissoko.game.sudoku.core.PositionIndexEnum;
 import com.mcissoko.game.sudoku.core.Sequence;
-import com.mcissoko.game.sudoku.core.StateBoxEnum;
-import com.mcissoko.game.sudoku.core.Sudoku;
+import com.mcissoko.game.sudoku.core.SudokuFactory;
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
+import com.mcissoko.game.sudoku.core.enumeration.InputActionEnum;
+import com.mcissoko.game.sudoku.core.enumeration.StateBoxEnum;
+import com.mcissoko.game.sudoku.core.enumeration.SudokuLevelEnum;
 
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -81,12 +82,12 @@ public class RootLayoutController implements IMonitor {
 	private boolean writingSolution;
 	
 	private List<BoxUi> boxes;
-	private Thread thread;	
 
 	private Grid grille;
 	private MyPrinter myPrinter;
 	
 	protected IMonitor monitor;
+	protected IPromise promise;
 	@FXML
     private void handleExit() {
 		
@@ -98,9 +99,14 @@ public class RootLayoutController implements IMonitor {
 	}	
 
 	@FXML private void cancelResolve() {
-		thread.stop();
 		//service.cancel();
-		this.sudoku.setGrid(grille);
+		//this.sudoku.setGrid(grille);
+		this.promise.cancel();
+		this.pauseTgl.setSelected(false);
+		pauseTgl.setText("PAUSE");
+		this.paused = false;
+
+		
 		cancelPane.setVisible(false);
 		cancelPane.toBack();
 		menuPane.setDisable(false);
@@ -127,11 +133,10 @@ public class RootLayoutController implements IMonitor {
 			Group group = grid.getGroup(groupIndexEnum);
 
 			for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
-				Box caze = group.getBox(positionIndexEnum);
-				if (caze.getState() == StateBoxEnum.FIXED) {
+				BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+				if (box.isFixed()) {
 					continue;
 				}
-				BoxUi box = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
 				box.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
 			}
 		}
@@ -146,51 +151,40 @@ public class RootLayoutController implements IMonitor {
 	
 	private void resolve(IMonitor mon) {
 		
-		grille = this.sudoku.getGrid();
+		
 		System.out.println(grille);
-		Grid grilleCopy;
-		
-		grilleCopy = grille.copy();
-		 
-		
-		this.sudoku.setGrid(grilleCopy);
-		//TODO start process
+		Grid grilleCopy = grille.copy();
+				
 		menuPane.setDisable(true);
 		unrePane.setDisable(true);
 		
 		cancelPane.toFront();
 		cancelPane.setVisible(true);
+
+		this.promise = sudoku.resolve(grilleCopy, mon);
 		
+		this.promise.done(grid -> {
+			Platform.runLater(() -> {
+				if(grid == null || this.promise.isCanceled()) {
+					return;
+				}
+				cancelPane.toBack();
+				cancelPane.setVisible(false);
+				menuPane.setDisable(false);
+				unrePane.setDisable(false);
+
+				doSolved(grid);
+
+			});
+
+		});
 		
-		sudoku.resolve(mon)
-		.done(grid -> {
-					
-					 cancelPane.toBack();
-						cancelPane.setVisible(false);
-						menuPane.setDisable(false);
-						unrePane.setDisable(false);
-						
-						doSolved(grid);
-				});
-		
-		
-		
-		
+		//this.promise.fail(f -> System.out.println());
+
 	}
 
 	@FXML private void resolveCurrent() {
-		resolve(new IMonitor() {
-			
-			@Override
-			public void erase(Box caze) {
-				
-			}
-			
-			@Override
-			public void display(Box caze) {
-				
-			}
-		});
+		resolve(null);
 	}
 	
 	
@@ -377,7 +371,7 @@ public class RootLayoutController implements IMonitor {
 		eraseMenuItem.setDisable(true);
 		redoBtn.setDisable(true); redoBtn.setVisible(false); redoSequences.clear();
 		undoBtn.setDisable(true); undoBtn.setVisible(false); undoSequences.clear();
-		String str = "Résolu en " + convertDuration(this.sudoku.getDuration());
+		String str = "Résolu en " + convertDuration(this.promise.getDuration());
 		Platform.runLater(
 				  () -> {
 					  this.durationLabel.setText(str);
@@ -545,50 +539,46 @@ public class RootLayoutController implements IMonitor {
 	
 
 	private void initGrille(SudokuLevelEnum level){
-		sudoku = new Sudoku();
+		//sudoku = new SudokuImpl();
 		redoBtn.setDisable(true); redoBtn.setVisible(true); redoSequences.clear();
 		undoBtn.setDisable(true); undoBtn.setVisible(true); undoSequences.clear();
 		
 		printMenuItem.setDisable(false);
 		//printSolutionMenuItem.setDisable(false);
+//		this.sudoku = SudokuFactory.create();
 		
-		if(SudokuLevelEnum.DEFAULT == level) {
-			
-			System.out.println(level);
-		} else {
+		System.out.println(level);
+		//resolveMenuItem.setDisable(true);
+		promise = sudoku.newGrid(level);
+		promise.done(done -> {
+			this.grille = done;
+			this.setInitiating(true);
+			for (GroupIndexEnum groupIndexEnum : GroupIndexEnum.values()) {
+				Group group = this.grille.getGroup(groupIndexEnum);
 
-			//resolveMenuItem.setDisable(true);
-			IPromise promise = sudoku.newGrid(level);
-			promise.done(done -> {
-				sudoku.init();
-				Grid grid = sudoku.getGrid();
-				this.setInitiating(true);
-				for (GroupIndexEnum groupIndexEnum : GroupIndexEnum.values()) {
-					Group group = done.getGroup(groupIndexEnum);
+				for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
+					Box box = group.getBox(positionIndexEnum);
+					if (box.getState() == StateBoxEnum.FIXED) {
+						BoxUi boxUi = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
 
-					for (PositionIndexEnum positionIndexEnum : PositionIndexEnum.values()) {
-						Box box = group.getBox(positionIndexEnum);
-						if (box.getState() == StateBoxEnum.FIXED) {
-							BoxUi boxUi = gridMap.get(indexBox(groupIndexEnum, positionIndexEnum));
+						this.grille.getGroup(groupIndexEnum).fixBox(positionIndexEnum, group.getBox(positionIndexEnum).getContent());
 
-							grid.getGroup(groupIndexEnum).fixBox(positionIndexEnum, group.getBox(positionIndexEnum).getContent());
-
-							boxUi.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
-							boxUi.getGroupBox().setDisable(true);
-							boxUi.getGroupBox().setStyle(fixedStyle);
-							boxUi.setFixed(true);
-						}
-
+						boxUi.getGroupBox().setText(String.valueOf(group.getBox(positionIndexEnum).getContent()));
+						boxUi.getGroupBox().setDisable(true);
+						boxUi.getGroupBox().setStyle(fixedStyle);
+						boxUi.setFixed(true);
 					}
+
 				}
-				this.setInitiating(false);
-				resolveMenuItem.setDisable(false);
-				resolveMenuItem2.setDisable(false);
+			}
+			this.setInitiating(false);
+			resolveMenuItem.setDisable(false);
+			resolveMenuItem2.setDisable(false);
 
-			});
+		});
 
 
-		}
+		
 	}
 	
 	@FXML private void printGrid(){
@@ -685,6 +675,7 @@ public class RootLayoutController implements IMonitor {
 	@SuppressWarnings("unchecked")
 	public void init(){
 		this.monitor = this;
+		this.sudoku = SudokuFactory.create();
 		this.gridMap = new HashMap<>();
 		boxes = new ArrayList<>();
 		occurIndexList = new ArrayList<>();
@@ -1033,9 +1024,11 @@ public class RootLayoutController implements IMonitor {
 		
 		try {
 			System.out.println("display " + caze);
+			grille = this.sudoku.getGrid();
 			while(this.paused) {
 				System.out.println("en pause");
 				Thread.sleep(1000);
+				//this.paused = this.promise.isCanceled();
 			}
 			BoxUi box = gridMap.get(indexBox(caze.getGroup().getIndex(), caze.getPosition().getIndex()));
 			if(box != null) {
@@ -1052,6 +1045,7 @@ public class RootLayoutController implements IMonitor {
 	public void erase(Box caze) {
 		try {
 			System.out.println("erase " + caze);
+			grille = this.sudoku.getGrid();
 			while(this.paused) {
 				System.out.println("en pause");
 				Thread.sleep(1000);

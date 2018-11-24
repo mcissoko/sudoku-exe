@@ -1,6 +1,8 @@
 package com.mcissoko.game.sudoku.core;
 
 import java.io.Serializable;
+
+import com.mcissoko.game.sudoku.core.enumeration.GroupIndexEnum;
 /**
  * Immutable Object
  * 

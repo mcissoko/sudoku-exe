@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import com.mcissoko.game.sudoku.core.enumeration.StateBoxEnum;
+
 public class Box extends AbstractBox implements Serializable {
 
 	private static final long serialVersionUID = -3308228191662064132L;
